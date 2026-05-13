@@ -201,74 +201,90 @@ nav {
 
 /* ── STAY TRIGGER (hero CTA) ── */
 .stay-trigger {
-  display: grid;
+  display: inline-grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 18px;
   width: 100%;
-  max-width: 640px;
-  padding: 14px 14px 14px 22px;
+  max-width: 460px;
+  padding: 18px 22px;
   margin-bottom: 28px;
-  background: rgba(255, 255, 255, 0.97);
-  border: none;
-  border-radius: 16px;
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(26, 20, 16, 0.08);
+  border-radius: 999px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
   cursor: pointer;
   text-align: left;
   font-family: var(--font-sans);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .stay-trigger:hover {
   transform: translateY(-1px);
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.26), 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
 }
 
 .stay-trigger-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: #f7f2e6;
   color: #1a1410;
+  flex-shrink: 0;
 }
 
 .stay-trigger-icon svg {
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
 }
 
 .stay-trigger-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .stay-trigger-title {
   font-size: 15px;
   font-weight: 600;
   color: #1a1410;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stay-trigger-sub {
-  font-size: 13px;
-  color: #6f6356;
+  font-size: 12px;
+  color: #8a7d6c;
+  letter-spacing: 0.01em;
 }
 
-.stay-trigger-cta {
-  padding: 12px 22px;
-  border-radius: 10px;
+.stay-trigger-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
   background: #1a1410;
   color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  transition: background 0.18s ease;
+  flex-shrink: 0;
+  transition: background 0.18s ease, transform 0.18s ease;
 }
 
-.stay-trigger:hover .stay-trigger-cta {
+.stay-trigger-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.stay-trigger:hover .stay-trigger-arrow {
   background: #c8973a;
+  transform: translateX(2px);
 }
 
 /* ── STAY MODAL ── */
@@ -293,7 +309,7 @@ nav {
 
 .stay-modal {
   width: 100%;
-  max-width: 760px;
+  max-width: 880px;
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 40px 90px rgba(0, 0, 0, 0.28);
@@ -583,59 +599,101 @@ nav {
 .stay-daypicker {
   --rdp-accent-color: #1a1410;
   --rdp-accent-background-color: #f4eee2;
-  --rdp-day-height: 44px;
-  --rdp-day-width: 44px;
-  --rdp-day_button-height: 42px;
-  --rdp-day_button-width: 42px;
+  --rdp-day-height: 42px;
+  --rdp-day-width: 42px;
+  --rdp-day_button-height: 40px;
+  --rdp-day_button-width: 40px;
   --rdp-day_button-border-radius: 999px;
   --rdp-selected-border: none;
   --rdp-range_middle-background-color: #f4eee2;
+  --rdp-range_middle-color: #1a1410;
   --rdp-range_start-date-background-color: #1a1410;
   --rdp-range_end-date-background-color: #1a1410;
   --rdp-range_start-color: #fff;
   --rdp-range_end-color: #fff;
-  --rdp-months-gap: 2.2rem;
-  --rdp-weekday-opacity: 0.6;
-  --rdp-disabled-opacity: 0.4;
-  margin: 8px 0 4px;
+  --rdp-months-gap: 2rem;
+  --rdp-weekday-opacity: 1;
+  --rdp-disabled-opacity: 1;
+  --rdp-nav_button-width: 36px;
+  --rdp-nav_button-height: 36px;
+  --rdp-nav-height: 36px;
+  margin: 8px auto 4px;
   font-family: var(--font-sans);
   color: #1a1410;
+  display: flex;
+  justify-content: center;
+}
+
+.stay-daypicker .rdp-months {
+  margin: 0 auto;
 }
 
 .stay-daypicker .rdp-month_caption {
   font-weight: 500;
   font-size: 15px;
   color: #1a1410;
+  justify-content: center;
+}
+
+.stay-daypicker .rdp-button_next,
+.stay-daypicker .rdp-button_previous {
+  color: #1a1410;
+  border-radius: 999px;
+  transition: background 0.15s ease;
+}
+
+.stay-daypicker .rdp-button_next:hover,
+.stay-daypicker .rdp-button_previous:hover {
+  background: #f4eee2;
+}
+
+.stay-daypicker .rdp-chevron {
+  fill: #1a1410;
 }
 
 .stay-daypicker .rdp-weekday {
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 11px;
+  font-weight: 500;
   color: #8a7d6c;
   text-transform: lowercase;
-  border-bottom: 1px solid #f0ebe1;
+  padding: 8px 0 10px;
 }
 
 .stay-daypicker .rdp-day_button {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   color: #1a1410;
+  transition: background 0.12s ease, border-color 0.12s ease;
 }
 
 .stay-daypicker .rdp-day_button:hover:not([disabled]) {
-  background: transparent;
-  border-color: #1a1410;
+  background: #f7f2e6;
+  border-color: transparent;
 }
 
 .stay-daypicker .rdp-day_disabled .rdp-day_button {
-  color: #b8b0a4;
+  color: #c5beb1;
   text-decoration: line-through;
   cursor: not-allowed;
 }
 
-.stay-daypicker .rdp-today .rdp-day_button {
+.stay-daypicker .rdp-day_disabled .rdp-day_button:hover {
+  background: transparent;
+}
+
+.stay-daypicker .rdp-today:not(.rdp-selected) .rdp-day_button {
   color: #c8973a;
-  font-weight: 700;
+  font-weight: 600;
+}
+
+.stay-daypicker .rdp-range_middle .rdp-day_button {
+  background: transparent;
+  border-radius: 0;
+}
+
+.stay-daypicker .rdp-range_start .rdp-day_button,
+.stay-daypicker .rdp-range_end .rdp-day_button {
+  font-weight: 600;
 }
 
 /* ── CTA ── */
@@ -762,6 +820,11 @@ nav {
   gap: 22px;
   max-width: 1280px;
   margin: 0 auto;
+}
+
+.cards-single {
+  grid-template-columns: minmax(0, 720px);
+  justify-content: center;
 }
 
 .card {

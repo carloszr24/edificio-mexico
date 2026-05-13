@@ -188,7 +188,7 @@ export default function StayModal({ open, initial, onClose, onSubmit }: Props) {
               <div className="stay-section-body">
                 <GuestRow
                   label="Adultos"
-                  sub="18 años o más"
+                  sub="18+"
                   value={adults}
                   min={1}
                   max={8}

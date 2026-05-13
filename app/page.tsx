@@ -8,41 +8,23 @@ const BOOKING_HOTEL_URL = "https://www.booking.com/hotel/es/estudios-los-arcos.e
 const BOOKING_DEST_ID = "-404164";
 const BOOKING_DEFAULT_DAYS = 2;
 const DEMO_AVAILABILITY_PATH = "/reserva";
-const ROOMS = [
-  {
-    name: "Habitación Doble",
-    image: "/images/habitacion-doble.png",
-    size: "22 m²",
-    bed: "1 cama doble",
-    summary:
-      "Habitación con baño privado y zona de cocina completa. Incluye entrada independiente, TV de pantalla plana y toda la unidad accesible en silla de ruedas.",
-    highlights: ["Zona de cocina privada", "Baño privado", "Vistas", "WiFi gratis"],
-    kitchen: ["Nevera", "Cafetera", "Microondas", "Utensilios", "Horno", "Fogones", "Tostadora"],
-    bathroom: ["Ducha a ras de suelo", "Artículos de aseo gratis", "Toallas", "Papel higiénico"],
-  },
-  {
-    name: "Apartamento Estudio",
-    image: "/images/apartamento-estudio.png",
-    size: "22 m²",
-    bed: "1 cama doble + 1 sofá cama",
-    summary:
-      "Apartamento entero con aire acondicionado individual, cocina privada y vistas a la ciudad. Perfecto para una estancia cómoda en pareja o en familia.",
-    highlights: ["Apartamento entero", "Cocina privada", "Vistas a la ciudad", "Aire acondicionado", "WiFi gratis"],
-    kitchen: ["Nevera", "Cafetera", "Microondas", "Utensilios", "Horno", "Fogones", "Tostadora"],
-    bathroom: ["Ducha a ras de suelo", "Artículos de aseo gratis", "Toallas", "Papel higiénico"],
-  },
-  {
-    name: "Habitación Familiar con baño privado",
-    image: "/images/habitacion-familiar.png",
-    size: "22 m²",
-    bed: "1 cama doble + 1 sofá cama",
-    summary:
-      "Habitación familiar con cocina privada, aire acondicionado y vistas a la ciudad. Equipada para familias con juegos de mesa y barandillas de seguridad para bebés.",
-    highlights: ["Cocina privada", "Baño privado", "Vistas a la ciudad", "Aire acondicionado", "WiFi gratis"],
-    kitchen: ["Nevera", "Cafetera", "Microondas", "Utensilios", "Horno", "Fogones", "Tostadora"],
-    bathroom: ["Ducha a ras de suelo", "Artículos de aseo gratis", "Toallas", "Papel higiénico"],
-  },
-];
+const APARTMENT = {
+  name: "Apartamento Edificio México",
+  image: "/images/edificio-mexico-hero.jpg",
+  size: "Apartamento completo",
+  bed: "1 cama doble + 1 sofá cama",
+  summary:
+    "Apartamento entero en El Puerto de Roquetas de Mar. Aire acondicionado individual, cocina privada totalmente equipada y vistas a la ciudad. Perfecto para parejas o familias que quieran sentirse como en casa.",
+  highlights: [
+    "Apartamento entero",
+    "Cocina privada",
+    "Aire acondicionado",
+    "WiFi gratis",
+    "Vistas a la ciudad",
+  ],
+  kitchen: ["Nevera", "Cafetera", "Microondas", "Utensilios", "Horno", "Fogones", "Tostadora"],
+  bathroom: ["Ducha a ras de suelo", "Artículos de aseo gratis", "Toallas", "Papel higiénico"],
+} as const;
 const REVIEWS = [
   {
     author: "Xsanz",
@@ -312,22 +294,24 @@ export default function Home() {
           >
             <span className="stay-trigger-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
-                <rect x="3.5" y="5" width="17" height="15" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
-                <path d="M3.5 9.5h17M8 3.5v3M16 3.5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <rect x="3.5" y="5" width="17" height="15" rx="2" stroke="currentColor" strokeWidth="1.6" fill="none" />
+                <path d="M3.5 9.5h17M8 3.5v3M16 3.5v3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               </svg>
             </span>
             <span className="stay-trigger-text">
               <span className="stay-trigger-title">{stayTriggerLabel}</span>
               <span className="stay-trigger-sub">{stayGuestsLabel}</span>
             </span>
-            <span className="stay-trigger-cta" aria-hidden="true">
-              Buscar disponibilidad
+            <span className="stay-trigger-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </span>
           </button>
 
           <div className="hero-actions">
             <a href="#alojamientos" className="hero-cta">
-              Elige tu habitación <span className="cta-arrow">→</span>
+              Ver el apartamento <span className="cta-arrow">→</span>
             </a>
           </div>
         </div>
@@ -335,54 +319,52 @@ export default function Home() {
 
       <section className="alojamientos" id="alojamientos">
         <div className="section-header reveal">
-          <p className="section-eyebrow">Nuestros alojamientos</p>
-          <h2 className="section-title">Elige tu opción ideal</h2>
+          <p className="section-eyebrow">Nuestro alojamiento</p>
+          <h2 className="section-title">Tu apartamento en Roquetas de Mar</h2>
         </div>
-        <div className="cards">
-          {ROOMS.map((room, index) => (
-            <article key={room.name} className={`card reveal d${Math.min(index + 1, 3)}`}>
-              <div className="card-img">
-                <img src={room.image} alt={room.name} />
-              </div>
-              <div className="card-body">
-                <div className="card-title">{room.name}</div>
-                <p className="card-meta">
-                  <strong>{room.size}</strong> · {room.bed}
-                </p>
-                <p className="card-description">{room.summary}</p>
-                <ul className="card-features card-features-main">
-                  {room.highlights.map((feature) => (
-                    <li key={feature}>{feature}</li>
+        <div className="cards cards-single">
+          <article className="card reveal d1">
+            <div className="card-img">
+              <img src={APARTMENT.image} alt={APARTMENT.name} />
+            </div>
+            <div className="card-body">
+              <div className="card-title">{APARTMENT.name}</div>
+              <p className="card-meta">
+                <strong>{APARTMENT.size}</strong> · {APARTMENT.bed}
+              </p>
+              <p className="card-description">{APARTMENT.summary}</p>
+              <ul className="card-features card-features-main">
+                {APARTMENT.highlights.map((feature) => (
+                  <li key={feature}>{feature}</li>
+                ))}
+              </ul>
+              <div className="card-subsection">
+                <p>Cocina</p>
+                <ul className="card-features">
+                  {APARTMENT.kitchen.map((item) => (
+                    <li key={`kitchen-${item}`}>{item}</li>
                   ))}
                 </ul>
-                <div className="card-subsection">
-                  <p>Cocina</p>
-                  <ul className="card-features">
-                    {room.kitchen.map((item) => (
-                      <li key={`${room.name}-${item}`}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="card-subsection">
-                  <p>Baño</p>
-                  <ul className="card-features">
-                    {room.bathroom.map((item) => (
-                      <li key={`${room.name}-bath-${item}`}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-                <ul className="card-features card-features-main">
-                  <li>TV de pantalla plana</li>
-                  <li>Entrada privada</li>
-                  <li>Zona de comedor</li>
-                  <li>Apartamento privado en edificio</li>
-                </ul>
-                <a href={quickAvailabilityUrl} className="btn-card">
-                  Comprobar disponibilidad
-                </a>
               </div>
-            </article>
-          ))}
+              <div className="card-subsection">
+                <p>Baño</p>
+                <ul className="card-features">
+                  {APARTMENT.bathroom.map((item) => (
+                    <li key={`bath-${item}`}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <ul className="card-features card-features-main">
+                <li>TV de pantalla plana</li>
+                <li>Entrada privada</li>
+                <li>Zona de comedor</li>
+                <li>Apartamento privado en edificio</li>
+              </ul>
+              <a href={quickAvailabilityUrl} className="btn-card">
+                Comprobar disponibilidad
+              </a>
+            </div>
+          </article>
         </div>
       </section>
 

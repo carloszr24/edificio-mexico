@@ -7,32 +7,6 @@ const BOOKING_HOTEL_URL = "https://www.booking.com/hotel/es/estudios-los-arcos.e
 const BOOKING_DEST_ID = "-404164";
 const BOOKING_DEFAULT_DAYS = 2;
 const DEMO_AVAILABILITY_PATH = "/disponibilidad";
-const TERUEL_SLIDES = [
-  {
-    src: "/images/teruel-carrusel-1.jpg",
-    alt: "Teruel carrusel 1",
-  },
-  {
-    src: "/images/teruel-carrusel-2.jpg",
-    alt: "Teruel carrusel 2",
-  },
-  {
-    src: "/images/teruel-carrusel-3.jpg",
-    alt: "Teruel carrusel 3",
-  },
-  {
-    src: "/images/teruel-carrusel-4.jpg",
-    alt: "Teruel carrusel 4",
-  },
-  {
-    src: "/images/teruel-carrusel-5.jpg",
-    alt: "Teruel carrusel 5",
-  },
-  {
-    src: "/images/teruel-carrusel-6.jpg",
-    alt: "Teruel carrusel 6",
-  },
-];
 const ROOMS = [
   {
     name: "Habitación Doble",
@@ -192,7 +166,6 @@ export default function Home() {
   const reviewPages = buildReviewPages();
   const [reviewPageIndex, setReviewPageIndex] = useState(reviewPages.length);
   const [reviewTransition, setReviewTransition] = useState(true);
-  const [teruelSlideIndex, setTeruelSlideIndex] = useState(0);
   const guestsPanelRef = useRef<HTMLDivElement>(null);
   const carouselReviewPages = [...reviewPages, ...reviewPages, ...reviewPages];
   const quickAvailabilityParams = new URLSearchParams({
@@ -300,21 +273,6 @@ export default function Home() {
     });
     return () => cancelAnimationFrame(id);
   }, [reviewTransition]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTeruelSlideIndex((current) => (current + 1) % TERUEL_SLIDES.length);
-    }, 5500);
-    return () => clearInterval(interval);
-  }, []);
-
-  const goToPrevTeruelSlide = () => {
-    setTeruelSlideIndex((current) => (current - 1 + TERUEL_SLIDES.length) % TERUEL_SLIDES.length);
-  };
-
-  const goToNextTeruelSlide = () => {
-    setTeruelSlideIndex((current) => (current + 1) % TERUEL_SLIDES.length);
-  };
 
   return (
     <>
@@ -520,31 +478,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="teruel-carousel-section" id="galeria" aria-label="Carrusel de Teruel">
-        <div className="teruel-carousel-track">
-          {TERUEL_SLIDES.map((slide, index) => (
-            <div key={slide.src} className={`teruel-slide ${index === teruelSlideIndex ? "is-active" : ""}`}>
-              <img src={slide.src} alt={slide.alt} />
-            </div>
-          ))}
-          <button type="button" className="teruel-nav teruel-nav-prev" onClick={goToPrevTeruelSlide} aria-label="Imagen anterior">
-            ‹
-          </button>
-          <button type="button" className="teruel-nav teruel-nav-next" onClick={goToNextTeruelSlide} aria-label="Imagen siguiente">
-            ›
-          </button>
-          <div className="teruel-dots">
-            {TERUEL_SLIDES.map((slide, index) => (
-              <button
-                key={slide.alt}
-                type="button"
-                className={`teruel-dot ${index === teruelSlideIndex ? "active" : ""}`}
-                onClick={() => setTeruelSlideIndex(index)}
-                aria-label={`Ir a imagen ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
+      <section className="video-showcase" id="galeria" aria-label="V\u00eddeo de Edificio M\u00e9xico en Almer\u00eda">
+        <video
+          className="video-showcase-media"
+          src="/images/edificio-mexico-almeria.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label="V\u00eddeo en loop del Edificio M\u00e9xico"
+        />
       </section>
 
       <section className="resenas" id="resenas">

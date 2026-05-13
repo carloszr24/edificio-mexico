@@ -63,7 +63,7 @@ export default function PagoPage({
   return (
     <main className="booking-flow-page">
       <section className="booking-flow-card">
-        <p className="availability-demo-badge">Paso 3 de 3</p>
+        <p className="availability-demo-badge">Paso 2 de 2</p>
         <h1>Pago seguro</h1>
         <p className="booking-flow-subtitle">Revisa tu reserva y confirma el pago para finalizar.</p>
 

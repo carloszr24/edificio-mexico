@@ -7,7 +7,7 @@ import StayModal, { type StaySelection } from "./components/StayModal";
 const BOOKING_HOTEL_URL = "https://www.booking.com/hotel/es/estudios-los-arcos.es.html";
 const BOOKING_DEST_ID = "-404164";
 const BOOKING_DEFAULT_DAYS = 2;
-const DEMO_AVAILABILITY_PATH = "/disponibilidad";
+const DEMO_AVAILABILITY_PATH = "/reserva";
 const ROOMS = [
   {
     name: "Habitación Doble",

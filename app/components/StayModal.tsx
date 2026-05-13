@@ -1,9 +1,22 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { DayPicker, type DateRange } from "react-day-picker";
+import { DayPicker, type DateRange, type DayButtonProps } from "react-day-picker";
 import { es } from "react-day-picker/locale";
 import "react-day-picker/style.css";
+
+const NIGHTLY_PRICE_LABEL = "84\u20ac";
+
+function PricedDayButton({ day, modifiers, children, ...buttonProps }: DayButtonProps) {
+  const showPrice = !modifiers.disabled && !modifiers.outside && !modifiers.hidden;
+  return (
+    <button {...buttonProps} type="button">
+      <span className="rdp-day-num">{day.date.getDate()}</span>
+      {showPrice && <span className="rdp-day-price">{NIGHTLY_PRICE_LABEL}</span>}
+      {children}
+    </button>
+  );
+}
 
 export type StaySelection = {
   from?: Date;
@@ -145,6 +158,9 @@ export default function StayModal({ open, initial, onClose, onSubmit }: Props) {
                   showOutsideDays={false}
                   weekStartsOn={1}
                   className="stay-daypicker"
+                  components={{
+                    DayButton: PricedDayButton,
+                  }}
                 />
                 <button
                   type="button"

@@ -583,11 +583,11 @@ nav {
 .stay-daypicker {
   --rdp-accent-color: #1a1410;
   --rdp-accent-background-color: #f4eee2;
-  --rdp-day-height: 40px;
-  --rdp-day-width: 40px;
-  --rdp-day_button-height: 38px;
-  --rdp-day_button-width: 38px;
-  --rdp-day_button-border-radius: 999px;
+  --rdp-day-height: 54px;
+  --rdp-day-width: 48px;
+  --rdp-day_button-height: 50px;
+  --rdp-day_button-width: 46px;
+  --rdp-day_button-border-radius: 12px;
   --rdp-selected-border: none;
   --rdp-range_middle-background-color: #f4eee2;
   --rdp-range_start-date-background-color: #1a1410;
@@ -618,13 +618,44 @@ nav {
 
 .stay-daypicker .rdp-day_button {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: #1a1410;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 2px 0;
+}
+
+.stay-daypicker .rdp-day-num {
+  line-height: 1;
+}
+
+.stay-daypicker .rdp-day-price {
+  font-size: 10px;
+  font-weight: 500;
+  color: #8a7d6c;
+  letter-spacing: 0.02em;
 }
 
 .stay-daypicker .rdp-day_button:hover:not([disabled]) {
   background: transparent;
   border-color: #1a1410;
+}
+
+.stay-daypicker .rdp-day_button:hover:not([disabled]) .rdp-day-price {
+  color: #1a1410;
+}
+
+.stay-daypicker .rdp-selected .rdp-day_button .rdp-day-price,
+.stay-daypicker .rdp-range_start .rdp-day_button .rdp-day-price,
+.stay-daypicker .rdp-range_end .rdp-day_button .rdp-day-price {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.stay-daypicker .rdp-range_middle .rdp-day_button .rdp-day-price {
+  color: #6f6356;
 }
 
 .stay-daypicker .rdp-day_disabled .rdp-day_button {
@@ -633,9 +664,9 @@ nav {
   cursor: not-allowed;
 }
 
-.stay-daypicker .rdp-today .rdp-day_button {
+.stay-daypicker .rdp-today .rdp-day_button .rdp-day-num {
   color: #c8973a;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* ── CTA ── */
@@ -1371,10 +1402,10 @@ nav {
   }
   .stay-daypicker {
     --rdp-months-gap: 1.2rem;
-    --rdp-day-height: 36px;
-    --rdp-day-width: 36px;
-    --rdp-day_button-height: 34px;
-    --rdp-day_button-width: 34px;
+    --rdp-day-height: 48px;
+    --rdp-day-width: 42px;
+    --rdp-day_button-height: 44px;
+    --rdp-day_button-width: 40px;
   }
 }
 
@@ -1659,41 +1690,31 @@ nav {
   color: #51606e;
 }
 
-.booking-room-options {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.booking-room-option {
-  border: 1px solid #dee4ea;
-  border-radius: 12px;
-  padding: 12px;
-  cursor: pointer;
+.booking-single-apartment {
   display: grid;
   gap: 4px;
-  background: #fff;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  border: 1px solid #e2dfd8;
+  border-radius: 14px;
+  background: #faf7f1;
 }
 
-.booking-room-option input {
-  margin: 0 0 2px;
-  width: auto;
-}
-
-.booking-room-option-name {
+.booking-single-apartment-name {
   font-weight: 700;
-  color: #1f2937;
+  color: #1a1410;
+  font-size: 15px;
 }
 
-.booking-room-option-price {
+.booking-single-apartment-price {
   font-weight: 700;
   color: #2f704f;
+  font-size: 14px;
 }
 
-.booking-room-option-meta {
+.booking-single-apartment-meta {
   font-size: 12px;
-  color: #607080;
+  color: #6f6356;
 }
 
 .booking-form-grid {
@@ -1804,10 +1825,6 @@ nav {
   }
 
   .booking-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .booking-room-options {
     grid-template-columns: 1fr;
   }
 

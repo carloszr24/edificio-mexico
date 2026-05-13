@@ -15,9 +15,9 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Estudios Los Arcos",
+  title: "Edificio México - Alojamiento en Roquetas de Mar",
   description:
-    "Alojamiento funcional en Teruel. Reserva tu estancia en Estudios Los Arcos a través de Booking.",
+    "Alojamiento funcional en Roquetas de Mar. Reserva tu estancia en Edificio México, en El Puerto de Roquetas de Mar.",
 };
 
 export default function RootLayout({

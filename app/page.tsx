@@ -7,24 +7,6 @@ const BOOKING_HOTEL_URL = "https://www.booking.com/hotel/es/estudios-los-arcos.e
 const BOOKING_DEST_ID = "-404164";
 const BOOKING_DEFAULT_DAYS = 2;
 const DEMO_AVAILABILITY_PATH = "/disponibilidad";
-const HERO_SLIDES = [
-  {
-    src: "/images/roquetas-de-mar.jpg",
-    alt: "Roquetas de Mar - vista 1",
-  },
-  {
-    src: "/images/roquetas-de-mar-2.jpg",
-    alt: "Roquetas de Mar - vista 2",
-  },
-  {
-    src: "/images/roquetas-de-mar-3.avif",
-    alt: "Roquetas de Mar - vista 3",
-  },
-  {
-    src: "/images/roquetas-de-mar-4.webp",
-    alt: "Roquetas de Mar - vista 4",
-  },
-];
 const TERUEL_SLIDES = [
   {
     src: "/images/teruel-carrusel-1.jpg",
@@ -210,7 +192,6 @@ export default function Home() {
   const reviewPages = buildReviewPages();
   const [reviewPageIndex, setReviewPageIndex] = useState(reviewPages.length);
   const [reviewTransition, setReviewTransition] = useState(true);
-  const [heroSlideIndex, setHeroSlideIndex] = useState(0);
   const [teruelSlideIndex, setTeruelSlideIndex] = useState(0);
   const guestsPanelRef = useRef<HTMLDivElement>(null);
   const carouselReviewPages = [...reviewPages, ...reviewPages, ...reviewPages];
@@ -294,13 +275,6 @@ export default function Home() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setHeroSlideIndex((current) => (current + 1) % HERO_SLIDES.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
       setReviewTransition(true);
       setReviewPageIndex((current) => current + 1);
     }, 3200);
@@ -342,24 +316,16 @@ export default function Home() {
     setTeruelSlideIndex((current) => (current + 1) % TERUEL_SLIDES.length);
   };
 
-  const goToPrevHeroSlide = () => {
-    setHeroSlideIndex((current) => (current - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  };
-
-  const goToNextHeroSlide = () => {
-    setHeroSlideIndex((current) => (current + 1) % HERO_SLIDES.length);
-  };
-
   return (
     <>
       <nav>
-        <a href="tel:+34605872573" className="nav-phone" aria-label="Llamar al 605 87 25 73">
+        <a href="tel:+34601523359" className="nav-phone" aria-label="Llamar al 601 52 33 59">
           <span className="nav-phone-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" role="img" focusable="false">
               <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.61 21 3 13.39 3 4c0-.55.45-1 1-1h3.49c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.19 2.2z" />
             </svg>
           </span>
-          <span className="nav-phone-text">605 87 25 73</span>
+          <span className="nav-phone-text">601 52 33 59</span>
         </a>
         <div className="nav-logo">
           <Image
@@ -377,41 +343,22 @@ export default function Home() {
       </nav>
 
       <section className="hero">
-        {HERO_SLIDES.map((slide, index) => (
-          <div key={slide.src} className={`hero-slide ${index === heroSlideIndex ? "is-active" : ""}`}>
-            <Image
-              src={slide.src}
-              alt={slide.alt}
-              fill
-              sizes="100vw"
-              priority={index === 0}
-              quality={82}
-            />
-          </div>
-        ))}
-        <div className="hero-overlay" />
-        <button type="button" className="hero-nav hero-nav-prev" onClick={goToPrevHeroSlide} aria-label="Imagen anterior">
-          ‹
-        </button>
-        <button type="button" className="hero-nav hero-nav-next" onClick={goToNextHeroSlide} aria-label="Imagen siguiente">
-          ›
-        </button>
-        <div className="hero-dots">
-          {HERO_SLIDES.map((slide, index) => (
-            <button
-              key={slide.alt}
-              type="button"
-              className={`hero-dot ${index === heroSlideIndex ? "active" : ""}`}
-              onClick={() => setHeroSlideIndex(index)}
-              aria-label={`Ir a imagen ${index + 1}`}
-            />
-          ))}
+        <div className="hero-slide is-active">
+          <Image
+            src="/images/edificio-mexico-hero.jpg"
+            alt="Edificio México - alojamiento en Roquetas de Mar"
+            fill
+            sizes="100vw"
+            priority
+            quality={82}
+          />
         </div>
+        <div className="hero-overlay" />
 
         <div className="hero-content">
-          <p className="hero-eyebrow">Tu alojamiento en Teruel</p>
+          <p className="hero-eyebrow">Tu alojamiento en Roquetas de Mar</p>
           <h1 className="hero-title">
-            Teruel desde <em>otro punto</em>
+            Roquetas de Mar desde <em>otro punto</em>
             <br />
             de vista
           </h1>
@@ -674,23 +621,25 @@ export default function Home() {
       <section className="ubicacion-section" id="ubicacion">
         <div className="ubicacion-map">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1520.4156259531956!2d-1.1088443809215651!3d40.34608926889388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd5e73320d7177a5%3A0xf2f0671726916355!2sEstudios%20los%20Arcos%20Teruel!5e0!3m2!1ses!2ses!4v1777355252929!5m2!1ses!2ses"
+            src="https://www.google.com/maps?q=Avenida+Antonio+Machado+73,+El+Puerto,+Roquetas+de+Mar&output=embed"
             width="600"
             height="450"
             style={{ border: 0 }}
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Mapa de Estudios Los Arcos Teruel"
+            title="Mapa de Edificio México - Roquetas de Mar"
           />
         </div>
         <div className="ubicacion-content reveal">
           <p className="section-eyebrow">Ubicación</p>
-          <h2 className="section-title">Estamos en el casco histórico de Teruel</h2>
+          <h2 className="section-title">Estamos en El Puerto de Roquetas de Mar</h2>
           <p className="ubicacion-text">
-            Dirección: C. los Baches, 13, 44003 Teruel
+            Dirección: Avenida Antonio Machado 73, El Puerto, Roquetas de Mar
             <br />
-            Teléfono (atención 24 horas): 605 87 25 73
+            Teléfono (atención 24 horas): <a href="tel:+34601523359">601 52 33 59</a>
+            <br />
+            Email: <a href="mailto:info@edificiomexico.com">info@edificiomexico.com</a>
           </p>
           <div className="ubicacion-chip">
             <strong>9,0</strong>
@@ -701,7 +650,7 @@ export default function Home() {
 
       <section className="cta-final" id="cta">
         <div className="cta-text">
-          <div className="cta-text-main">Todo listo para tu estancia en Teruel</div>
+          <div className="cta-text-main">Todo listo para tu estancia en Roquetas de Mar</div>
           <div className="cta-text-sub">Apartamentos funcionales con todo lo que necesitas.</div>
         </div>
         <a href={BOOKING_HOTEL_URL} className="cta-btn" target="_blank" rel="noreferrer">
@@ -729,6 +678,14 @@ export default function Home() {
           </li>
           <li>
             <a href="#resenas">Opiniones</a>
+          </li>
+        </ul>
+        <ul className="footer-contact">
+          <li>
+            <a href="tel:+34601523359">601 52 33 59</a>
+          </li>
+          <li>
+            <a href="mailto:info@edificiomexico.com">info@edificiomexico.com</a>
           </li>
         </ul>
       </footer>

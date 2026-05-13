@@ -25,6 +25,12 @@
 *.pem
 data/reservations.json
 
+# image originals (kept locally as backup before optimization)
+/public/images/_originals/
+
+# misc local dumps
+/FULL_CODE_DUMP.txt
+
 # debug
 npm-debug.log*
 yarn-debug.log*

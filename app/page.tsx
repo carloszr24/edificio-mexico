@@ -9,20 +9,20 @@ const BOOKING_DEFAULT_DAYS = 2;
 const DEMO_AVAILABILITY_PATH = "/disponibilidad";
 const HERO_SLIDES = [
   {
-    src: "/images/entrada-los-arcos.png",
-    alt: "Entrada de Estudios Los Arcos",
+    src: "/images/roquetas-de-mar.jpg",
+    alt: "Roquetas de Mar - vista 1",
   },
   {
-    src: "/images/comedor-los-arcos.png",
-    alt: "Comedor de Estudios Los Arcos",
+    src: "/images/roquetas-de-mar-2.jpg",
+    alt: "Roquetas de Mar - vista 2",
   },
   {
-    src: "/images/habitacion-los-arcos.png",
-    alt: "Habitación de Estudios Los Arcos",
+    src: "/images/roquetas-de-mar-3.avif",
+    alt: "Roquetas de Mar - vista 3",
   },
   {
-    src: "/images/vistas-teruel.png",
-    alt: "Vistas de Teruel",
+    src: "/images/roquetas-de-mar-4.webp",
+    alt: "Roquetas de Mar - vista 4",
   },
 ];
 const TERUEL_SLIDES = [
@@ -363,8 +363,8 @@ export default function Home() {
         </a>
         <div className="nav-logo">
           <Image
-            src="/images/logo-estudio-arcos.png"
-            alt="Logo Estudios Los Arcos"
+            src="/images/edificio-mexico-logo.png"
+            alt="Logo Edificio México"
             width={230}
             height={70}
             className="brand-logo"
@@ -379,7 +379,14 @@ export default function Home() {
       <section className="hero">
         {HERO_SLIDES.map((slide, index) => (
           <div key={slide.src} className={`hero-slide ${index === heroSlideIndex ? "is-active" : ""}`}>
-            <img src={slide.src} alt={slide.alt} />
+            <Image
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              sizes="100vw"
+              priority={index === 0}
+              quality={82}
+            />
           </div>
         ))}
         <div className="hero-overlay" />
@@ -705,13 +712,13 @@ export default function Home() {
       <footer className="footer-nav" id="contacto">
         <div className="footer-brand">
           <Image
-            src="/images/logo-estudio-arcos.png"
-            alt="Logo Estudios Los Arcos"
+            src="/images/edificio-mexico-logo.png"
+            alt="Logo Edificio México"
             width={120}
             height={36}
             className="footer-brand-logo"
           />
-          <div className="footer-logo-text">ESTUDIOS LOS ARCOS</div>
+          <div className="footer-logo-text">EDIFICIO MÉXICO</div>
         </div>
         <ul className="footer-links">
           <li>

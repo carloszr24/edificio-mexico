@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import StayModal, { type StaySelection } from "./components/StayModal";
 
 const BOOKING_HOTEL_URL = "https://www.booking.com/hotel/es/estudios-los-arcos.es.html";
 const BOOKING_DEST_ID = "-404164";
@@ -131,13 +132,6 @@ function buildReviewPages() {
   return pages;
 }
 
-function formatDate(value: string) {
-  if (!value) return "";
-  const [y, m, d] = value.split("-");
-  const months = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-  return `${parseInt(d, 10)} ${months[parseInt(m, 10) - 1]} ${y}`;
-}
-
 function formatDateForInput(date: Date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -157,36 +151,63 @@ function buildDemoAvailabilityUrl(params: URLSearchParams) {
 }
 
 export default function Home() {
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
-  const [rooms, setRooms] = useState(1);
-  const [checkinDisplay, setCheckinDisplay] = useState("");
-  const [checkoutDisplay, setCheckoutDisplay] = useState("");
-  const [isGuestsOpen, setIsGuestsOpen] = useState(false);
+  const [stay, setStay] = useState<StaySelection>({
+    adults: 2,
+    children: 0,
+    coupon: "",
+  });
+  const [isStayModalOpen, setIsStayModalOpen] = useState(false);
   const reviewPages = buildReviewPages();
   const [reviewPageIndex, setReviewPageIndex] = useState(reviewPages.length);
   const [reviewTransition, setReviewTransition] = useState(true);
-  const guestsPanelRef = useRef<HTMLDivElement>(null);
   const carouselReviewPages = [...reviewPages, ...reviewPages, ...reviewPages];
-  const quickAvailabilityParams = new URLSearchParams({
-    lang: "es",
-    selected_currency: "EUR",
-    do_availability_check: "1",
-    hp_avform: "1",
-    hp_group_set: "0",
-    origin: "hp",
-    src: "hotel",
-    type: "total",
-    sb_price_type: "total",
-    dest_id: BOOKING_DEST_ID,
-    dest_type: "city",
-    checkin: formatDateForInput(new Date()),
-    checkout: formatDateForInput(addDays(new Date(), BOOKING_DEFAULT_DAYS)),
-    group_adults: String(adults),
-    group_children: String(children),
-    no_rooms: String(rooms),
-  });
-  const quickAvailabilityUrl = buildDemoAvailabilityUrl(quickAvailabilityParams);
+
+  const stayTriggerLabel = (() => {
+    if (!stay.from || !stay.to) return "Selecciona tu estancia";
+    const fmt = (d: Date) =>
+      d.toLocaleDateString("es-ES", { day: "numeric", month: "short" }).replace(".", "");
+    return `${fmt(stay.from)} - ${fmt(stay.to)}`;
+  })();
+
+  const stayGuestsLabel = `${stay.adults} adulto${stay.adults !== 1 ? "s" : ""}${
+    stay.children > 0 ? ` · ${stay.children} niño${stay.children !== 1 ? "s" : ""}` : ""
+  }`;
+
+  const buildAvailabilityParams = (selection: StaySelection) => {
+    const params = new URLSearchParams({
+      lang: "es",
+      selected_currency: "EUR",
+      do_availability_check: "1",
+      hp_avform: "1",
+      hp_group_set: "0",
+      origin: "hp",
+      src: "hotel",
+      type: "total",
+      sb_price_type: "total",
+      dest_id: BOOKING_DEST_ID,
+      dest_type: "city",
+      checkin: formatDateForInput(selection.from ?? new Date()),
+      checkout: formatDateForInput(
+        selection.to ?? addDays(selection.from ?? new Date(), BOOKING_DEFAULT_DAYS),
+      ),
+      group_adults: String(selection.adults),
+      group_children: String(selection.children),
+      no_rooms: "1",
+    });
+    if (selection.coupon) {
+      params.set("coupon", selection.coupon);
+    }
+    return params;
+  };
+
+  const quickAvailabilityUrl = buildDemoAvailabilityUrl(buildAvailabilityParams(stay));
+
+  const handleStaySubmit = (selection: StaySelection) => {
+    setStay(selection);
+    setIsStayModalOpen(false);
+    const url = buildDemoAvailabilityUrl(buildAvailabilityParams(selection));
+    window.location.assign(url);
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -206,44 +227,6 @@ export default function Home() {
     });
 
     return () => observer.disconnect();
-  }, []);
-
-  const handleBookingSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-    const params = new URLSearchParams();
-
-    formData.forEach((value, key) => {
-      if (typeof value === "string" && value.length > 0) {
-        params.set(key, value);
-      }
-    });
-
-    const checkin = params.get("checkin");
-    const checkout = params.get("checkout");
-
-    if (!checkin) {
-      params.set("checkin", formatDateForInput(new Date()));
-    }
-    if (!checkout) {
-      params.set("checkout", formatDateForInput(addDays(new Date(), BOOKING_DEFAULT_DAYS)));
-    }
-
-    const availabilityDemoUrl = buildDemoAvailabilityUrl(params);
-    window.location.assign(availabilityDemoUrl);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!guestsPanelRef.current) return;
-      if (!guestsPanelRef.current.contains(event.target as Node)) {
-        setIsGuestsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -321,101 +304,26 @@ export default function Home() {
             de vista
           </h1>
 
-          <div className="booking-card">
-            <form className="booking-inner" onSubmit={handleBookingSubmit}>
-              <input type="hidden" name="lang" value="es" />
-              <input type="hidden" name="selected_currency" value="EUR" />
-              <input type="hidden" name="do_availability_check" value="1" />
-              <input type="hidden" name="hp_avform" value="1" />
-              <input type="hidden" name="hp_group_set" value="0" />
-              <input type="hidden" name="origin" value="hp" />
-              <input type="hidden" name="src" value="hotel" />
-              <input type="hidden" name="type" value="total" />
-              <input type="hidden" name="sb_price_type" value="total" />
-              <input type="hidden" name="dest_id" value={BOOKING_DEST_ID} />
-              <input type="hidden" name="dest_type" value="city" />
-              <input type="hidden" name="group_adults" value={adults} />
-              <input type="hidden" name="group_children" value={children} />
-              <input type="hidden" name="no_rooms" value={rooms} />
-
-              <div className="bf-cell">
-                <span className="bf-label">Entrada</span>
-                <span className={`bf-value ${!checkinDisplay ? "placeholder" : ""}`}>{checkinDisplay || "Selecciona fecha"}</span>
-                <input
-                  type="date"
-                  name="checkin"
-                  className="bf-date-input"
-                  onChange={(e) => setCheckinDisplay(formatDate(e.target.value))}
-                />
-              </div>
-
-              <div className="bf-divider" />
-
-              <div className="bf-cell">
-                <span className="bf-label">Salida</span>
-                <span className={`bf-value ${!checkoutDisplay ? "placeholder" : ""}`}>
-                  {checkoutDisplay || "Selecciona fecha"}
-                </span>
-                <input
-                  type="date"
-                  name="checkout"
-                  className="bf-date-input"
-                  onChange={(e) => setCheckoutDisplay(formatDate(e.target.value))}
-                />
-              </div>
-
-              <div className="bf-divider" />
-
-              <div className="bf-cell bf-cell-guests" ref={guestsPanelRef} onClick={() => setIsGuestsOpen((p) => !p)}>
-                <span className="bf-label">Huéspedes</span>
-                <span className="bf-value">
-                  {adults} adulto{adults !== 1 ? "s" : ""}
-                  {children > 0 ? ` · ${children} niño${children !== 1 ? "s" : ""}` : ""}
-                </span>
-
-                {isGuestsOpen && (
-                  <div className="guests-popover" onClick={(e) => e.stopPropagation()}>
-                    {[
-                      { key: "adults", label: "Adultos", sub: "13 años o más", min: 1, max: 8, value: adults, set: setAdults },
-                      { key: "children", label: "Niños", sub: "2 – 12 años", min: 0, max: 6, value: children, set: setChildren },
-                      { key: "rooms", label: "Habitaciones", sub: null, min: 1, max: 4, value: rooms, set: setRooms },
-                    ].map(({ key, label, sub, min, max, value, set }) => (
-                      <div className="guest-row" key={key}>
-                        <div>
-                          <div className="guest-label">{label}</div>
-                          {sub && <div className="guest-sub">{sub}</div>}
-                        </div>
-                        <div className="guest-ctrl">
-                          <button
-                            type="button"
-                            className="g-btn"
-                            onClick={() => set((v) => Math.max(min, v - 1))}
-                            disabled={value <= min}
-                          >
-                            −
-                          </button>
-                          <span className="g-count">{value}</span>
-                          <button
-                            type="button"
-                            className="g-btn"
-                            onClick={() => set((v) => Math.min(max, v + 1))}
-                            disabled={value >= max}
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <button type="submit" className="bf-search-btn">
-                <span className="bf-search-icon">↗</span>
-                Buscar disponibilidad
-              </button>
-            </form>
-          </div>
+          <button
+            type="button"
+            className="stay-trigger"
+            onClick={() => setIsStayModalOpen(true)}
+            aria-haspopup="dialog"
+          >
+            <span className="stay-trigger-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <rect x="3.5" y="5" width="17" height="15" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                <path d="M3.5 9.5h17M8 3.5v3M16 3.5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </span>
+            <span className="stay-trigger-text">
+              <span className="stay-trigger-title">{stayTriggerLabel}</span>
+              <span className="stay-trigger-sub">{stayGuestsLabel}</span>
+            </span>
+            <span className="stay-trigger-cta" aria-hidden="true">
+              Buscar disponibilidad
+            </span>
+          </button>
 
           <div className="hero-actions">
             <a href="#alojamientos" className="hero-cta">
@@ -633,6 +541,13 @@ export default function Home() {
           </li>
         </ul>
       </footer>
+
+      <StayModal
+        open={isStayModalOpen}
+        initial={stay}
+        onClose={() => setIsStayModalOpen(false)}
+        onSubmit={handleStaySubmit}
+      />
     </>
   );
 }

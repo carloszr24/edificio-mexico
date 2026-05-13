@@ -183,7 +183,7 @@ nav {
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.52);
+  color: rgba(26, 20, 16, 0.7);
   margin-bottom: 14px;
 }
 
@@ -192,13 +192,13 @@ nav {
   font-size: clamp(48px, 7vw, 88px);
   font-weight: 400;
   line-height: 1;
-  color: #fff;
+  color: #1a1410;
   margin-bottom: 44px;
   letter-spacing: -0.01em;
 }
 .hero-title em {
   font-style: italic;
-  color: #e8c98a;
+  color: #c8973a;
 }
 
 /* ── BOOKING CARD ── */

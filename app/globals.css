@@ -583,11 +583,11 @@ nav {
 .stay-daypicker {
   --rdp-accent-color: #1a1410;
   --rdp-accent-background-color: #f4eee2;
-  --rdp-day-height: 54px;
-  --rdp-day-width: 48px;
-  --rdp-day_button-height: 50px;
-  --rdp-day_button-width: 46px;
-  --rdp-day_button-border-radius: 12px;
+  --rdp-day-height: 44px;
+  --rdp-day-width: 44px;
+  --rdp-day_button-height: 42px;
+  --rdp-day_button-width: 42px;
+  --rdp-day_button-border-radius: 999px;
   --rdp-selected-border: none;
   --rdp-range_middle-background-color: #f4eee2;
   --rdp-range_start-date-background-color: #1a1410;
@@ -620,42 +620,11 @@ nav {
   font-size: 14px;
   font-weight: 500;
   color: #1a1410;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 2px 0;
-}
-
-.stay-daypicker .rdp-day-num {
-  line-height: 1;
-}
-
-.stay-daypicker .rdp-day-price {
-  font-size: 10px;
-  font-weight: 500;
-  color: #8a7d6c;
-  letter-spacing: 0.02em;
 }
 
 .stay-daypicker .rdp-day_button:hover:not([disabled]) {
   background: transparent;
   border-color: #1a1410;
-}
-
-.stay-daypicker .rdp-day_button:hover:not([disabled]) .rdp-day-price {
-  color: #1a1410;
-}
-
-.stay-daypicker .rdp-selected .rdp-day_button .rdp-day-price,
-.stay-daypicker .rdp-range_start .rdp-day_button .rdp-day-price,
-.stay-daypicker .rdp-range_end .rdp-day_button .rdp-day-price {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.stay-daypicker .rdp-range_middle .rdp-day_button .rdp-day-price {
-  color: #6f6356;
 }
 
 .stay-daypicker .rdp-day_disabled .rdp-day_button {
@@ -664,7 +633,7 @@ nav {
   cursor: not-allowed;
 }
 
-.stay-daypicker .rdp-today .rdp-day_button .rdp-day-num {
+.stay-daypicker .rdp-today .rdp-day_button {
   color: #c8973a;
   font-weight: 700;
 }
@@ -1402,10 +1371,10 @@ nav {
   }
   .stay-daypicker {
     --rdp-months-gap: 1.2rem;
-    --rdp-day-height: 48px;
-    --rdp-day-width: 42px;
-    --rdp-day_button-height: 44px;
-    --rdp-day_button-width: 40px;
+    --rdp-day-height: 38px;
+    --rdp-day-width: 38px;
+    --rdp-day_button-height: 36px;
+    --rdp-day_button-width: 36px;
   }
 }
 

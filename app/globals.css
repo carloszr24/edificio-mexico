@@ -916,7 +916,7 @@ nav {
 .apt-slide {
   position: relative;
   flex: 0 0 80vw;
-  height: clamp(340px, 52vh, 560px);
+  height: clamp(440px, 68vh, 760px);
   border-radius: 14px;
   overflow: hidden;
   background: #f0ebe1;
@@ -1081,7 +1081,7 @@ nav {
   }
   .apt-slide {
     flex: 0 0 86vw;
-    height: clamp(260px, 42vh, 420px);
+    height: clamp(320px, 56vh, 520px);
   }
   .apt-track { padding-left: 7vw; }
   .apt-features {

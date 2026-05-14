@@ -679,22 +679,6 @@ export default function Home() {
         </div>
 
         <div className="apt-info">
-          <div className="apt-dots" role="tablist" aria-label="Selector de slide">
-            {APARTMENT_SLIDES.map((slide, index) => (
-              <button
-                key={slide.image}
-                type="button"
-                role="tab"
-                aria-selected={index === aptRealIndex}
-                aria-label={`Ver ${slide.title}`}
-                className={`apt-dot ${index === aptRealIndex ? "is-active" : ""}`}
-                onClick={() => setAptIndex(index + 1)}
-              >
-                <span>{slide.title}</span>
-              </button>
-            ))}
-          </div>
-
           <div
             className="apt-features"
             role="list"

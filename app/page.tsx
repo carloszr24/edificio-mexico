@@ -254,8 +254,8 @@ export default function Home() {
           <Image
             src="/images/edificio-mexico-logo.png"
             alt="Logo Edificio México"
-            width={230}
-            height={70}
+            width={460}
+            height={140}
             className="brand-logo"
             priority
           />
@@ -279,13 +279,6 @@ export default function Home() {
         <div className="hero-overlay" />
 
         <div className="hero-content">
-          <p className="hero-eyebrow">Tu alojamiento en Roquetas de Mar</p>
-          <h1 className="hero-title">
-            Roquetas de Mar desde <em>otro punto</em>
-            <br />
-            de vista
-          </h1>
-
           <button
             type="button"
             className="stay-trigger"

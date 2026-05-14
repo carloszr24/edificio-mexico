@@ -5,9 +5,6 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import StayModal, { type StaySelection } from "./components/StayModal";
 
 const BOOKING_HOTEL_URL = "https://www.booking.com/hotel/es/estudios-los-arcos.es.html";
-const BOOKING_DEST_ID = "-404164";
-const BOOKING_DEFAULT_DAYS = 2;
-const DEMO_AVAILABILITY_PATH = "/reserva";
 const HERO_SLIDES = [
   { src: "/images/edificio-mexico-hero.jpg", alt: "Salón del apartamento Edificio México" },
   { src: "/images/foto-habitacion.jpg", alt: "Habitación del apartamento Edificio México" },
@@ -333,29 +330,14 @@ function buildReviewPages() {
   return pages;
 }
 
-function formatDateForInput(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function addDays(date: Date, days: number) {
-  const next = new Date(date);
-  next.setDate(next.getDate() + days);
-  return next;
-}
-
-function buildDemoAvailabilityUrl(params: URLSearchParams) {
-  const query = params.toString();
-  return `${DEMO_AVAILABILITY_PATH}${query ? `?${query}` : ""}`;
-}
-
 export default function Home() {
   const [stay, setStay] = useState<StaySelection>({
     adults: 2,
     children: 0,
     coupon: "",
+    extras: [],
+    guest: { name: "", email: "", phone: "", notes: "" },
+    paymentMethod: "card",
   });
   const [isStayModalOpen, setIsStayModalOpen] = useState(false);
   const [heroSlide, setHeroSlide] = useState(0);
@@ -425,40 +407,8 @@ export default function Home() {
     stay.children > 0 ? ` · ${stay.children} niño${stay.children !== 1 ? "s" : ""}` : ""
   }`;
 
-  const buildAvailabilityParams = (selection: StaySelection) => {
-    const params = new URLSearchParams({
-      lang: "es",
-      selected_currency: "EUR",
-      do_availability_check: "1",
-      hp_avform: "1",
-      hp_group_set: "0",
-      origin: "hp",
-      src: "hotel",
-      type: "total",
-      sb_price_type: "total",
-      dest_id: BOOKING_DEST_ID,
-      dest_type: "city",
-      checkin: formatDateForInput(selection.from ?? new Date()),
-      checkout: formatDateForInput(
-        selection.to ?? addDays(selection.from ?? new Date(), BOOKING_DEFAULT_DAYS),
-      ),
-      group_adults: String(selection.adults),
-      group_children: String(selection.children),
-      no_rooms: "1",
-    });
-    if (selection.coupon) {
-      params.set("coupon", selection.coupon);
-    }
-    return params;
-  };
-
-  const quickAvailabilityUrl = buildDemoAvailabilityUrl(buildAvailabilityParams(stay));
-
-  const handleStaySubmit = (selection: StaySelection) => {
+  const handleStayComplete = (selection: StaySelection) => {
     setStay(selection);
-    setIsStayModalOpen(false);
-    const url = buildDemoAvailabilityUrl(buildAvailabilityParams(selection));
-    window.location.assign(url);
   };
 
   useEffect(() => {
@@ -696,9 +646,9 @@ export default function Home() {
           </div>
 
           <div className="apt-cta">
-            <a href={quickAvailabilityUrl} className="btn-card">
+            <button type="button" className="btn-card" onClick={() => setIsStayModalOpen(true)}>
               Comprobar disponibilidad
-            </a>
+            </button>
           </div>
         </div>
       </section>
@@ -863,7 +813,7 @@ export default function Home() {
         open={isStayModalOpen}
         initial={stay}
         onClose={() => setIsStayModalOpen(false)}
-        onSubmit={handleStaySubmit}
+        onComplete={handleStayComplete}
       />
     </>
   );

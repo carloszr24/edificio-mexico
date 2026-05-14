@@ -266,11 +266,11 @@ nav {
   display: inline-grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 18px;
+  gap: 22px;
   width: 100%;
-  max-width: 460px;
-  padding: 18px 22px;
-  margin-bottom: 28px;
+  max-width: 560px;
+  padding: 22px 28px;
+  margin-bottom: 32px;
   background: rgba(255, 255, 255, 0.96);
   border: 1px solid rgba(26, 20, 16, 0.08);
   border-radius: 999px;
@@ -291,8 +291,8 @@ nav {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 46px;
+  height: 46px;
   border-radius: 999px;
   background: #f7f2e6;
   color: #1a1410;
@@ -300,8 +300,8 @@ nav {
 }
 
 .stay-trigger-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 .stay-trigger-text {
@@ -312,7 +312,7 @@ nav {
 }
 
 .stay-trigger-title {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 600;
   color: #1a1410;
   white-space: nowrap;
@@ -321,7 +321,7 @@ nav {
 }
 
 .stay-trigger-sub {
-  font-size: 12px;
+  font-size: 14px;
   color: #8a7d6c;
   letter-spacing: 0.01em;
 }
@@ -330,8 +330,8 @@ nav {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 48px;
+  height: 48px;
   border-radius: 999px;
   background: #1a1410;
   color: #fff;
@@ -340,8 +340,8 @@ nav {
 }
 
 .stay-trigger-arrow svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
 }
 
 .stay-trigger:hover .stay-trigger-arrow {
@@ -767,18 +767,18 @@ nav {
 .hero-cta {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 34px;
+  gap: 14px;
+  padding: 20px 46px;
   background: #c8973a;
   color: #fff;
   font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 17px;
+  font-weight: 600;
   letter-spacing: 0.04em;
   text-decoration: none;
   border-radius: 100px;
   transition: all 0.2s;
-  box-shadow: 0 8px 28px rgba(200, 151, 58, 0.4);
+  box-shadow: 0 10px 32px rgba(200, 151, 58, 0.4);
 }
 .hero-cta:hover {
   background: #fff;

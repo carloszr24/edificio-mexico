@@ -373,7 +373,7 @@ nav {
 .stay-modal {
   width: 100%;
   max-width: 880px;
-  max-height: calc(100vh - 80px);
+  max-height: calc(100vh - 24px);
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 40px 90px rgba(0, 0, 0, 0.28);
@@ -393,14 +393,14 @@ nav {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 26px 30px 22px;
+  padding: 18px 28px 14px;
   border-bottom: 1px solid #f0ebe1;
 }
 
 .stay-modal-header h2 {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 24px;
+  font-size: 21px;
   font-weight: 600;
   color: #1a1410;
   letter-spacing: -0.01em;
@@ -432,10 +432,10 @@ nav {
 }
 
 .stay-modal-body {
-  padding: 22px 28px;
+  padding: 16px 24px 18px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   overflow-y: auto;
   flex: 1 1 auto;
   min-height: 0;
@@ -458,8 +458,8 @@ nav {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 14px;
-  padding: 16px 20px;
+  gap: 12px;
+  padding: 12px 18px;
   border: none;
   background: transparent;
   cursor: pointer;
@@ -521,7 +521,7 @@ nav {
 }
 
 .stay-section-body {
-  padding: 4px 20px 20px;
+  padding: 2px 18px 14px;
   border-top: 1px solid #f0ebe1;
   display: flex;
   flex-direction: column;
@@ -530,8 +530,8 @@ nav {
 .stay-reset {
   display: block;
   width: 100%;
-  margin-top: 12px;
-  padding: 14px 16px;
+  margin-top: 8px;
+  padding: 10px 16px;
   background: transparent;
   border: none;
   border-top: 1px solid #f0ebe1;
@@ -1063,10 +1063,10 @@ nav {
 .stay-daypicker {
   --rdp-accent-color: #1a1410;
   --rdp-accent-background-color: #f4eee2;
-  --rdp-day-height: 36px;
-  --rdp-day-width: 36px;
-  --rdp-day_button-height: 34px;
-  --rdp-day_button-width: 34px;
+  --rdp-day-height: 34px;
+  --rdp-day-width: 34px;
+  --rdp-day_button-height: 32px;
+  --rdp-day_button-width: 32px;
   --rdp-day_button-border-radius: 999px;
   --rdp-selected-border: none;
   --rdp-range_middle-background-color: #f4eee2;
@@ -1075,13 +1075,13 @@ nav {
   --rdp-range_end-date-background-color: #1a1410;
   --rdp-range_start-color: #fff;
   --rdp-range_end-color: #fff;
-  --rdp-months-gap: 2rem;
+  --rdp-months-gap: 1.6rem;
   --rdp-weekday-opacity: 1;
   --rdp-disabled-opacity: 1;
-  --rdp-nav_button-width: 36px;
-  --rdp-nav_button-height: 36px;
-  --rdp-nav-height: 36px;
-  margin: 8px auto 4px;
+  --rdp-nav_button-width: 32px;
+  --rdp-nav_button-height: 32px;
+  --rdp-nav-height: 32px;
+  margin: 4px auto 0;
   font-family: var(--font-sans);
   color: #1a1410;
   display: flex;
@@ -1094,7 +1094,7 @@ nav {
 
 .stay-daypicker .rdp-month_caption {
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14px;
   color: #1a1410;
   justify-content: center;
 }
@@ -1116,15 +1116,15 @@ nav {
 }
 
 .stay-daypicker .rdp-weekday {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   color: #8a7d6c;
   text-transform: lowercase;
-  padding: 6px 0 6px;
+  padding: 4px 0 2px;
 }
 
 .stay-daypicker .rdp-day_button {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   color: #1a1410;
   transition: background 0.12s ease, border-color 0.12s ease;
@@ -2132,11 +2132,11 @@ nav {
     padding: 12px 16px;
   }
   .stay-daypicker {
-    --rdp-months-gap: 1.2rem;
-    --rdp-day-height: 38px;
-    --rdp-day-width: 38px;
-    --rdp-day_button-height: 36px;
-    --rdp-day_button-width: 36px;
+    --rdp-months-gap: 1rem;
+    --rdp-day-height: 32px;
+    --rdp-day-width: 32px;
+    --rdp-day_button-height: 30px;
+    --rdp-day_button-width: 30px;
   }
 }
 
@@ -2146,13 +2146,14 @@ nav {
     margin-bottom: 32px;
   }
   .stay-modal-body {
-    padding: 4px 14px 14px;
+    padding: 12px 14px 14px;
+    gap: 8px;
   }
   .stay-modal-header {
-    padding: 20px 18px 16px;
+    padding: 14px 18px 12px;
   }
   .stay-modal-header h2 {
-    font-size: 20px;
+    font-size: 19px;
   }
   .stay-form-grid {
     grid-template-columns: 1fr;
@@ -2167,10 +2168,16 @@ nav {
     text-align: center;
   }
   .stay-section-trigger {
-    padding: 14px 16px;
+    padding: 10px 14px;
   }
   .stay-section-body {
-    padding: 4px 16px 16px;
+    padding: 2px 12px 12px;
+  }
+  .stay-daypicker {
+    --rdp-day-height: 36px;
+    --rdp-day-width: 36px;
+    --rdp-day_button-height: 34px;
+    --rdp-day_button-width: 34px;
   }
   .stay-daypicker .rdp-months {
     flex-direction: column;

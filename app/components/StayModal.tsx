@@ -245,7 +245,11 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
 
   const handleRangeSelect = (next: DateRange | undefined) => {
     const wasComplete = Boolean(range?.from && range?.to);
-    const isComplete = Boolean(next?.from && next?.to);
+    const hasFrom = Boolean(next?.from);
+    const hasTo = Boolean(next?.to);
+    const isComplete = hasFrom && hasTo;
+    const isDifferentDay =
+      isComplete && next!.from!.getTime() !== next!.to!.getTime();
     setRange(next);
 
     if (advanceTimerRef.current !== null) {
@@ -253,11 +257,11 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
       advanceTimerRef.current = null;
     }
 
-    if (isComplete && !wasComplete) {
+    if (isComplete && isDifferentDay && !wasComplete) {
       advanceTimerRef.current = window.setTimeout(() => {
         setOpenSection("guests");
         advanceTimerRef.current = null;
-      }, 320);
+      }, 550);
     }
   };
 

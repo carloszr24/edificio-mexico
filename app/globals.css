@@ -140,8 +140,9 @@ nav {
   min-height: 680px;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  padding-bottom: 12vh;
 }
 .hero-slide {
   position: absolute;

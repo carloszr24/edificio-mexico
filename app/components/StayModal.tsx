@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, type DateRange } from "react-day-picker";
 import { es } from "react-day-picker/locale";
 import "react-day-picker/style.css";
@@ -127,29 +127,37 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
     return d;
   }, []);
 
+  const initialRef = useRef(initial);
   useEffect(() => {
-    if (!open) return;
-    setStep("stay");
-    setRange(initial.from ? { from: initial.from, to: initial.to } : undefined);
-    setAdults(initial.adults);
-    setChildren(initial.children);
-    setCoupon(initial.coupon);
-    setExtras(initial.extras ?? []);
-    setGuest(initial.guest);
-    setPaymentMethod(initial.paymentMethod);
-    setSubmittedGuest(false);
-    setIsProcessing(false);
-    setOpenSection("dates");
-  }, [open, initial]);
+    initialRef.current = initial;
+  });
+
+  const wasOpenRef = useRef(false);
+  const advanceTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!open || step !== "stay") return;
-    if (openSection !== "dates") return;
-    if (range?.from && range?.to) {
-      const id = window.setTimeout(() => setOpenSection("guests"), 220);
-      return () => window.clearTimeout(id);
+    if (open && !wasOpenRef.current) {
+      const snapshot = initialRef.current;
+      setStep("stay");
+      setRange(snapshot.from ? { from: snapshot.from, to: snapshot.to } : undefined);
+      setAdults(snapshot.adults);
+      setChildren(snapshot.children);
+      setCoupon(snapshot.coupon);
+      setExtras(snapshot.extras ?? []);
+      setGuest(snapshot.guest);
+      setPaymentMethod(snapshot.paymentMethod);
+      setSubmittedGuest(false);
+      setIsProcessing(false);
+      setOpenSection("dates");
     }
-  }, [open, step, openSection, range?.from, range?.to]);
+    wasOpenRef.current = open;
+    return () => {
+      if (advanceTimerRef.current !== null) {
+        window.clearTimeout(advanceTimerRef.current);
+        advanceTimerRef.current = null;
+      }
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -235,6 +243,32 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
     );
   };
 
+  const handleRangeSelect = (next: DateRange | undefined) => {
+    const wasComplete = Boolean(range?.from && range?.to);
+    const isComplete = Boolean(next?.from && next?.to);
+    setRange(next);
+
+    if (advanceTimerRef.current !== null) {
+      window.clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+
+    if (isComplete && !wasComplete) {
+      advanceTimerRef.current = window.setTimeout(() => {
+        setOpenSection("guests");
+        advanceTimerRef.current = null;
+      }, 320);
+    }
+  };
+
+  const handleResetRange = () => {
+    if (advanceTimerRef.current !== null) {
+      window.clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+    setRange(undefined);
+  };
+
   const continueLabel = (() => {
     if (step === "stay") return "Continuar";
     if (step === "extras") return "Continuar";
@@ -301,7 +335,7 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
                       mode="range"
                       numberOfMonths={2}
                       selected={range}
-                      onSelect={setRange}
+                      onSelect={handleRangeSelect}
                       disabled={{ before: today }}
                       locale={es}
                       showOutsideDays={false}
@@ -311,7 +345,7 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
                     <button
                       type="button"
                       className="stay-reset"
-                      onClick={() => setRange(undefined)}
+                      onClick={handleResetRange}
                       disabled={!range?.from}
                     >
                       Restablecer

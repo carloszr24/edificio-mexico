@@ -162,6 +162,68 @@ nav {
   display: none;
 }
 
+.hero-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1410;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.hero-nav:hover {
+  background: #fff;
+  transform: translateY(-50%) scale(1.05);
+}
+
+.hero-nav svg {
+  width: 22px;
+  height: 22px;
+}
+
+.hero-nav-prev { left: 28px; }
+.hero-nav-next { right: 28px; }
+
+.hero-dots {
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+
+.hero-dot {
+  width: 9px;
+  height: 9px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(26, 20, 16, 0.35);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.18s ease, width 0.18s ease;
+}
+
+.hero-dot.is-active {
+  background: #1a1410;
+  width: 24px;
+}
+
 .hero-content {
   position: relative;
   z-index: 4;
@@ -1343,6 +1405,22 @@ nav {
 
   .brand-logo {
     height: 96px;
+  }
+
+  .hero-nav {
+    width: 40px;
+    height: 40px;
+  }
+  .hero-nav svg {
+    width: 18px;
+    height: 18px;
+  }
+  .hero-nav-prev { left: 12px; }
+  .hero-nav-next { right: 12px; }
+  .hero-dots {
+    bottom: 18px;
+    gap: 8px;
+    padding: 6px 12px;
   }
 
   .nav-reserve {

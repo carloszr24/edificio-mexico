@@ -8,6 +8,13 @@ const BOOKING_HOTEL_URL = "https://www.booking.com/hotel/es/estudios-los-arcos.e
 const BOOKING_DEST_ID = "-404164";
 const BOOKING_DEFAULT_DAYS = 2;
 const DEMO_AVAILABILITY_PATH = "/reserva";
+const HERO_SLIDES = [
+  { src: "/images/edificio-mexico-hero.jpg", alt: "Salón del apartamento Edificio México" },
+  { src: "/images/foto-habitacion.jpg", alt: "Habitación del apartamento Edificio México" },
+  { src: "/images/foto-bano.jpg", alt: "Baño del apartamento Edificio México" },
+  { src: "/images/foto-terraza.jpg", alt: "Terraza del apartamento Edificio México" },
+] as const;
+const HERO_INTERVAL_MS = 5500;
 const APARTMENT = {
   name: "Apartamento Edificio México",
   image: "/images/edificio-mexico-hero.jpg",
@@ -139,6 +146,14 @@ export default function Home() {
     coupon: "",
   });
   const [isStayModalOpen, setIsStayModalOpen] = useState(false);
+  const [heroSlide, setHeroSlide] = useState(0);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setHeroSlide((current) => (current + 1) % HERO_SLIDES.length);
+    }, HERO_INTERVAL_MS);
+    return () => window.clearInterval(id);
+  }, []);
   const reviewPages = buildReviewPages();
   const [reviewPageIndex, setReviewPageIndex] = useState(reviewPages.length);
   const [reviewTransition, setReviewTransition] = useState(true);
@@ -265,18 +280,61 @@ export default function Home() {
         </a>
       </nav>
 
-      <section className="hero">
-        <div className="hero-slide is-active">
-          <Image
-            src="/images/edificio-mexico-hero.jpg"
-            alt="Edificio México - alojamiento en Roquetas de Mar"
-            fill
-            sizes="100vw"
-            priority
-            quality={82}
-          />
-        </div>
+      <section className="hero" aria-roledescription="carousel" aria-label="Fotos del apartamento Edificio México">
+        {HERO_SLIDES.map((slide, index) => (
+          <div
+            key={slide.src}
+            className={`hero-slide ${index === heroSlide ? "is-active" : ""}`}
+            aria-hidden={index === heroSlide ? "false" : "true"}
+          >
+            <Image
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              sizes="100vw"
+              priority={index === 0}
+              quality={82}
+            />
+          </div>
+        ))}
         <div className="hero-overlay" />
+
+        <button
+          type="button"
+          className="hero-nav hero-nav-prev"
+          aria-label="Imagen anterior"
+          onClick={() =>
+            setHeroSlide((current) => (current - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)
+          }
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          className="hero-nav hero-nav-next"
+          aria-label="Imagen siguiente"
+          onClick={() => setHeroSlide((current) => (current + 1) % HERO_SLIDES.length)}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+
+        <div className="hero-dots" role="tablist" aria-label="Selector de imagen">
+          {HERO_SLIDES.map((slide, index) => (
+            <button
+              key={slide.src}
+              type="button"
+              role="tab"
+              aria-selected={index === heroSlide}
+              aria-label={`Ir a la imagen ${index + 1}`}
+              className={`hero-dot ${index === heroSlide ? "is-active" : ""}`}
+              onClick={() => setHeroSlide(index)}
+            />
+          ))}
+        </div>
 
         <div className="hero-content">
           <button

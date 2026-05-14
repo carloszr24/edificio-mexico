@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import StayModal, { type StaySelection } from "./components/StayModal";
 
 const BOOKING_HOTEL_URL = "https://www.booking.com/hotel/es/estudios-los-arcos.es.html";
@@ -359,9 +359,10 @@ export default function Home() {
   });
   const [isStayModalOpen, setIsStayModalOpen] = useState(false);
   const [heroSlide, setHeroSlide] = useState(0);
-  const [aptSlide, setAptSlide] = useState(0);
-  const aptTrackRef = useRef<HTMLDivElement>(null);
+  const [aptIndex, setAptIndex] = useState(1);
+  const [aptAnimate, setAptAnimate] = useState(true);
   const [aptTranslate, setAptTranslate] = useState(0);
+  const aptTrackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -370,7 +371,7 @@ export default function Home() {
     return () => window.clearInterval(id);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const update = () => {
       const track = aptTrackRef.current;
       if (!track) return;
@@ -378,12 +379,36 @@ export default function Home() {
       if (!slide) return;
       const style = window.getComputedStyle(track);
       const gap = parseFloat(style.columnGap || style.gap || "0") || 0;
-      setAptTranslate(aptSlide * (slide.getBoundingClientRect().width + gap));
+      setAptTranslate(aptIndex * (slide.getBoundingClientRect().width + gap));
     };
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
-  }, [aptSlide]);
+  }, [aptIndex]);
+
+  useEffect(() => {
+    if (aptAnimate) return;
+    const id = requestAnimationFrame(() => setAptAnimate(true));
+    return () => cancelAnimationFrame(id);
+  }, [aptAnimate]);
+
+  const handleAptTransitionEnd = () => {
+    if (aptIndex === 0) {
+      setAptAnimate(false);
+      setAptIndex(APARTMENT_SLIDES.length);
+    } else if (aptIndex === APARTMENT_SLIDES.length + 1) {
+      setAptAnimate(false);
+      setAptIndex(1);
+    }
+  };
+
+  const aptRealIndex =
+    aptIndex === 0
+      ? APARTMENT_SLIDES.length - 1
+      : aptIndex === APARTMENT_SLIDES.length + 1
+        ? 0
+        : aptIndex - 1;
+  const aptActiveSlide = APARTMENT_SLIDES[aptRealIndex];
   const reviewPages = buildReviewPages();
   const [reviewPageIndex, setReviewPageIndex] = useState(reviewPages.length);
   const [reviewTransition, setReviewTransition] = useState(true);
@@ -599,57 +624,53 @@ export default function Home() {
       </section>
 
       <section className="alojamientos" id="alojamientos">
-        <div className="section-header reveal">
-          <p className="section-eyebrow">Nuestro alojamiento</p>
-          <h2 className="section-title">Tu apartamento en Roquetas de Mar</h2>
-          <p className="section-sub">
-            {APARTMENT_SLIDES[aptSlide]?.title} · {aptSlide + 1} / {APARTMENT_SLIDES.length}
-          </p>
-        </div>
+        <div className="apt-viewport">
+          <div
+            className="apt-track"
+            ref={aptTrackRef}
+            style={{
+              transform: `translate3d(-${aptTranslate}px, 0, 0)`,
+              transition: aptAnimate ? "transform 0.65s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
+            }}
+            onTransitionEnd={handleAptTransitionEnd}
+          >
+            {[
+              APARTMENT_SLIDES[APARTMENT_SLIDES.length - 1],
+              ...APARTMENT_SLIDES,
+              APARTMENT_SLIDES[0],
+            ].map((slide, idx) => (
+              <div
+                key={`apt-slide-${idx}`}
+                className={`apt-slide ${idx === aptIndex ? "is-active" : ""}`}
+                aria-hidden={idx === aptIndex ? "false" : "true"}
+              >
+                <Image
+                  src={slide.image}
+                  alt={slide.alt}
+                  fill
+                  sizes="80vw"
+                  quality={82}
+                  priority={idx === 1}
+                />
+              </div>
+            ))}
+          </div>
 
-        <div className="apt-carousel reveal">
           <button
             type="button"
             className="apt-nav apt-nav-prev"
             aria-label="Imagen anterior"
-            onClick={() =>
-              setAptSlide((current) => (current - 1 + APARTMENT_SLIDES.length) % APARTMENT_SLIDES.length)
-            }
+            onClick={() => setAptIndex((i) => Math.max(i - 1, 0))}
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
-
-          <div className="apt-viewport">
-            <div
-              className="apt-track"
-              ref={aptTrackRef}
-              style={{ transform: `translateX(-${aptTranslate}px)` }}
-            >
-              {APARTMENT_SLIDES.map((slide, index) => (
-                <div
-                  key={slide.image}
-                  className={`apt-slide ${index === aptSlide ? "is-active" : ""}`}
-                  aria-hidden={index === aptSlide ? "false" : "true"}
-                >
-                  <Image
-                    src={slide.image}
-                    alt={slide.alt}
-                    fill
-                    sizes="(max-width: 768px) 90vw, (max-width: 1280px) 80vw, 1100px"
-                    quality={82}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
           <button
             type="button"
             className="apt-nav apt-nav-next"
             aria-label="Imagen siguiente"
-            onClick={() => setAptSlide((current) => (current + 1) % APARTMENT_SLIDES.length)}
+            onClick={() => setAptIndex((i) => Math.min(i + 1, APARTMENT_SLIDES.length + 1))}
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
@@ -657,37 +678,44 @@ export default function Home() {
           </button>
         </div>
 
-        <div className="apt-dots" role="tablist" aria-label="Selector de slide">
-          {APARTMENT_SLIDES.map((slide, index) => (
-            <button
-              key={slide.image}
-              type="button"
-              role="tab"
-              aria-selected={index === aptSlide}
-              aria-label={`Ver ${slide.title}`}
-              className={`apt-dot ${index === aptSlide ? "is-active" : ""}`}
-              onClick={() => setAptSlide(index)}
-            >
-              <span>{slide.title}</span>
-            </button>
-          ))}
-        </div>
+        <div className="apt-info">
+          <div className="apt-dots" role="tablist" aria-label="Selector de slide">
+            {APARTMENT_SLIDES.map((slide, index) => (
+              <button
+                key={slide.image}
+                type="button"
+                role="tab"
+                aria-selected={index === aptRealIndex}
+                aria-label={`Ver ${slide.title}`}
+                className={`apt-dot ${index === aptRealIndex ? "is-active" : ""}`}
+                onClick={() => setAptIndex(index + 1)}
+              >
+                <span>{slide.title}</span>
+              </button>
+            ))}
+          </div>
 
-        <div className="apt-features" role="list" aria-label={`Características de ${APARTMENT_SLIDES[aptSlide]?.title}`}>
-          {APARTMENT_SLIDES[aptSlide]?.features.map((feature) => (
-            <div className="apt-feature" role="listitem" key={`${aptSlide}-${feature.label}`}>
-              <span className="apt-feature-icon" aria-hidden="true">
-                <AptFeatureIcon name={feature.icon} />
-              </span>
-              <span className="apt-feature-label">{feature.label}</span>
-            </div>
-          ))}
-        </div>
+          <div
+            className="apt-features"
+            role="list"
+            aria-label={`Características de ${aptActiveSlide?.title ?? ""}`}
+            key={`features-${aptRealIndex}`}
+          >
+            {aptActiveSlide?.features.map((feature) => (
+              <div className="apt-feature" role="listitem" key={feature.label}>
+                <span className="apt-feature-icon" aria-hidden="true">
+                  <AptFeatureIcon name={feature.icon} />
+                </span>
+                <span className="apt-feature-label">{feature.label}</span>
+              </div>
+            ))}
+          </div>
 
-        <div className="apt-cta">
-          <a href={quickAvailabilityUrl} className="btn-card">
-            Comprobar disponibilidad
-          </a>
+          <div className="apt-cta">
+            <a href={quickAvailabilityUrl} className="btn-card">
+              Comprobar disponibilidad
+            </a>
+          </div>
         </div>
       </section>
 

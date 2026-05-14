@@ -143,6 +143,15 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
   }, [open, initial]);
 
   useEffect(() => {
+    if (!open || step !== "stay") return;
+    if (openSection !== "dates") return;
+    if (range?.from && range?.to) {
+      const id = window.setTimeout(() => setOpenSection("guests"), 220);
+      return () => window.clearTimeout(id);
+    }
+  }, [open, step, openSection, range?.from, range?.to]);
+
+  useEffect(() => {
     if (!open) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
@@ -355,6 +364,13 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
                       max={6}
                       onChange={setChildren}
                     />
+                    <button
+                      type="button"
+                      className="stay-section-done"
+                      onClick={() => setOpenSection("coupon")}
+                    >
+                      Listo
+                    </button>
                   </div>
                 )}
               </section>
@@ -398,6 +414,13 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
                       autoComplete="off"
                       maxLength={32}
                     />
+                    <button
+                      type="button"
+                      className="stay-section-done"
+                      onClick={() => setOpenSection(null)}
+                    >
+                      Aplicar
+                    </button>
                   </div>
                 )}
               </section>

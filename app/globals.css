@@ -523,6 +523,8 @@ nav {
 .stay-section-body {
   padding: 4px 20px 20px;
   border-top: 1px solid #f0ebe1;
+  display: flex;
+  flex-direction: column;
 }
 
 .stay-reset {
@@ -549,6 +551,28 @@ nav {
 .stay-reset:disabled {
   color: #b8b0a4;
   cursor: not-allowed;
+}
+
+.stay-section-done {
+  display: inline-block;
+  margin: 16px auto 4px;
+  padding: 10px 22px;
+  border: 1px solid #1a1410;
+  border-radius: 999px;
+  background: #1a1410;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+  align-self: center;
+}
+
+.stay-section-done:hover {
+  background: #c8973a;
+  border-color: #c8973a;
 }
 
 .stay-guest-row {
@@ -1039,10 +1063,10 @@ nav {
 .stay-daypicker {
   --rdp-accent-color: #1a1410;
   --rdp-accent-background-color: #f4eee2;
-  --rdp-day-height: 42px;
-  --rdp-day-width: 42px;
-  --rdp-day_button-height: 40px;
-  --rdp-day_button-width: 40px;
+  --rdp-day-height: 36px;
+  --rdp-day-width: 36px;
+  --rdp-day_button-height: 34px;
+  --rdp-day_button-width: 34px;
   --rdp-day_button-border-radius: 999px;
   --rdp-selected-border: none;
   --rdp-range_middle-background-color: #f4eee2;
@@ -1096,7 +1120,7 @@ nav {
   font-weight: 500;
   color: #8a7d6c;
   text-transform: lowercase;
-  padding: 8px 0 10px;
+  padding: 6px 0 6px;
 }
 
 .stay-daypicker .rdp-day_button {

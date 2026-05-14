@@ -392,16 +392,20 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22px 28px 14px;
+  gap: 14px;
+  padding: 26px 30px 22px;
+  border-bottom: 1px solid #f0ebe1;
 }
 
 .stay-modal-header h2 {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 22px;
-  font-weight: 500;
-  color: #111;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1410;
   letter-spacing: -0.01em;
+  line-height: 1.2;
+  min-width: 0;
 }
 
 .stay-modal-close {
@@ -428,10 +432,10 @@ nav {
 }
 
 .stay-modal-body {
-  padding: 6px 22px 22px;
+  padding: 22px 28px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   overflow-y: auto;
   flex: 1 1 auto;
   min-height: 0;
@@ -697,72 +701,6 @@ nav {
 .stay-submit:disabled {
   opacity: 0.45;
   cursor: not-allowed;
-}
-
-/* ── STEPPER ── */
-.stay-stepper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  list-style: none;
-  margin: 0;
-  padding: 4px 22px 14px;
-  border-bottom: 1px solid #f0ebe1;
-  flex-shrink: 0;
-}
-
-.stay-stepper-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #b5ab9b;
-}
-
-.stay-stepper-item:not(:last-child)::after {
-  content: "";
-  width: 22px;
-  height: 1px;
-  background: #e6e2db;
-  margin-left: 4px;
-}
-
-.stay-stepper-bullet {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 999px;
-  border: 1px solid #e0dccf;
-  background: #fff;
-  color: #b5ab9b;
-  font-size: 12px;
-  font-weight: 600;
-  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
-}
-
-.stay-stepper-item.is-current {
-  color: #1a1410;
-}
-
-.stay-stepper-item.is-current .stay-stepper-bullet {
-  background: #1a1410;
-  border-color: #1a1410;
-  color: #fff;
-}
-
-.stay-stepper-item.is-done {
-  color: #1a1410;
-}
-
-.stay-stepper-item.is-done .stay-stepper-bullet {
-  background: #198754;
-  border-color: #198754;
-  color: #fff;
 }
 
 /* ── HELPER TEXT INSIDE STEPS ── */
@@ -2187,17 +2125,10 @@ nav {
     padding: 4px 14px 14px;
   }
   .stay-modal-header {
-    padding: 18px 18px 10px;
+    padding: 20px 18px 16px;
   }
-  .stay-stepper {
-    padding: 4px 14px 10px;
-    gap: 8px;
-  }
-  .stay-stepper-label {
-    display: none;
-  }
-  .stay-stepper-item:not(:last-child)::after {
-    width: 14px;
+  .stay-modal-header h2 {
+    font-size: 20px;
   }
   .stay-form-grid {
     grid-template-columns: 1fr;

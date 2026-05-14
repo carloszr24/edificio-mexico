@@ -179,7 +179,6 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
   const guestReady = guest.name.trim().length > 1 && emailValid(guest.email) && guest.phone.trim().length >= 6;
 
   const currentTitle = step === "done" ? "¡Reserva confirmada!" : STEPS.find((s) => s.id === step)?.title ?? "";
-  const stepIndex = STEPS.findIndex((s) => s.id === step);
 
   const goNext = () => {
     if (step === "stay") {
@@ -257,21 +256,6 @@ export default function StayModal({ open, initial, onClose, onComplete }: Props)
             </svg>
           </button>
         </header>
-
-        {step !== "done" && (
-          <ol className="stay-stepper" aria-label="Pasos de la reserva">
-            {STEPS.map((descriptor, index) => {
-              const state =
-                index < stepIndex ? "done" : index === stepIndex ? "current" : "pending";
-              return (
-                <li key={descriptor.id} className={`stay-stepper-item is-${state}`}>
-                  <span className="stay-stepper-bullet">{index < stepIndex ? "✓" : index + 1}</span>
-                  <span className="stay-stepper-label">{descriptor.label}</span>
-                </li>
-              );
-            })}
-          </ol>
-        )}
 
         <div className="stay-modal-body">
           {step === "stay" && (

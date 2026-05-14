@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StayModal, { type StaySelection } from "./components/StayModal";
 
 const BOOKING_HOTEL_URL = "https://www.booking.com/hotel/es/estudios-los-arcos.es.html";
@@ -15,23 +15,235 @@ const HERO_SLIDES = [
   { src: "/images/foto-terraza.jpg", alt: "Terraza del apartamento Edificio México" },
 ] as const;
 const HERO_INTERVAL_MS = 5500;
-const APARTMENT = {
-  name: "Apartamento Edificio México",
-  image: "/images/edificio-mexico-hero.jpg",
-  size: "Apartamento completo",
-  bed: "1 cama doble + 1 sofá cama",
-  summary:
-    "Apartamento entero en El Puerto de Roquetas de Mar. Aire acondicionado individual, cocina privada totalmente equipada y vistas a la ciudad. Perfecto para parejas o familias que quieran sentirse como en casa.",
-  highlights: [
-    "Apartamento entero",
-    "Cocina privada",
-    "Aire acondicionado",
-    "WiFi gratis",
-    "Vistas a la ciudad",
-  ],
-  kitchen: ["Nevera", "Cafetera", "Microondas", "Utensilios", "Horno", "Fogones", "Tostadora"],
-  bathroom: ["Ducha a ras de suelo", "Artículos de aseo gratis", "Toallas", "Papel higiénico"],
-} as const;
+type AptIcon =
+  | "tv" | "sofa" | "dining" | "wifi"
+  | "bed" | "wardrobe" | "ac" | "linen"
+  | "kitchen" | "fridge" | "coffee" | "cutlery"
+  | "sea" | "balcony" | "sun" | "palm"
+  | "terrace" | "table-out" | "open-air" | "sunbathe";
+
+type AptSlide = {
+  title: string;
+  image: string;
+  alt: string;
+  features: { icon: AptIcon; label: string }[];
+};
+
+const APARTMENT_SLIDES: AptSlide[] = [
+  {
+    title: "Salón",
+    image: "/images/foto-salon.jpg",
+    alt: "Salón del apartamento Edificio México",
+    features: [
+      { icon: "tv", label: "TV de pantalla plana" },
+      { icon: "sofa", label: "Sofá cama" },
+      { icon: "dining", label: "Zona de comedor" },
+      { icon: "wifi", label: "WiFi gratis" },
+    ],
+  },
+  {
+    title: "Dormitorio",
+    image: "/images/foto-cama.jpg",
+    alt: "Dormitorio del apartamento Edificio México",
+    features: [
+      { icon: "bed", label: "Cama doble" },
+      { icon: "wardrobe", label: "Armario amplio" },
+      { icon: "ac", label: "Aire acondicionado" },
+      { icon: "linen", label: "Ropa de cama incluida" },
+    ],
+  },
+  {
+    title: "Cocina",
+    image: "/images/foto-cocina.jpg",
+    alt: "Cocina del apartamento Edificio México",
+    features: [
+      { icon: "kitchen", label: "Cocina equipada" },
+      { icon: "fridge", label: "Nevera y horno" },
+      { icon: "coffee", label: "Cafetera y microondas" },
+      { icon: "cutlery", label: "Vajilla y utensilios" },
+    ],
+  },
+  {
+    title: "Balcón",
+    image: "/images/foto-balcon.jpg",
+    alt: "Balcón con vistas al mar del apartamento Edificio México",
+    features: [
+      { icon: "sea", label: "Vistas al mar" },
+      { icon: "balcony", label: "Balcón privado" },
+      { icon: "sun", label: "Luz natural" },
+      { icon: "palm", label: "Zona tranquila" },
+    ],
+  },
+  {
+    title: "Terraza",
+    image: "/images/foto-terrace.jpg",
+    alt: "Terraza del apartamento Edificio México",
+    features: [
+      { icon: "terrace", label: "Terraza privada" },
+      { icon: "table-out", label: "Mesa exterior" },
+      { icon: "open-air", label: "Espacio al aire libre" },
+      { icon: "sunbathe", label: "Tomar el sol" },
+    ],
+  },
+];
+
+function AptFeatureIcon({ name }: { name: AptIcon }) {
+  const stroke = "currentColor";
+  const sw = 1.5;
+  switch (name) {
+    case "tv":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="4" y="6" width="24" height="16" rx="2" stroke={stroke} strokeWidth={sw} fill="none" />
+          <path d="M11 26h10M16 22v4" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+        </svg>
+      );
+    case "sofa":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M5 19v-4a3 3 0 0 1 3-3h16a3 3 0 0 1 3 3v4" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+          <path d="M3 24v-3a2 2 0 0 1 2-2h22a2 2 0 0 1 2 2v3" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+          <path d="M6 24v3M26 24v3" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+        </svg>
+      );
+    case "dining":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M5 14h22M6 14v12M26 14v12" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+          <path d="M9 14v-3a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v3" stroke={stroke} strokeWidth={sw} fill="none" />
+        </svg>
+      );
+    case "wifi":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M5 13a16 16 0 0 1 22 0M9 17.5a10 10 0 0 1 14 0M13 22a4 4 0 0 1 6 0" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+          <circle cx="16" cy="25.5" r="1.4" fill={stroke} />
+        </svg>
+      );
+    case "bed":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M4 22V11M28 22v-6a3 3 0 0 0-3-3H14v6" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+          <path d="M4 18h24v4" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+          <circle cx="10" cy="15" r="2" stroke={stroke} strokeWidth={sw} fill="none" />
+        </svg>
+      );
+    case "wardrobe":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="7" y="4" width="18" height="24" rx="1.5" stroke={stroke} strokeWidth={sw} fill="none" />
+          <path d="M16 4v24" stroke={stroke} strokeWidth={sw} />
+          <circle cx="13.5" cy="16" r="0.9" fill={stroke} />
+          <circle cx="18.5" cy="16" r="0.9" fill={stroke} />
+        </svg>
+      );
+    case "ac":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="4" y="8" width="24" height="10" rx="2" stroke={stroke} strokeWidth={sw} fill="none" />
+          <path d="M9 13h14" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+          <path d="M11 21v2M16 21v3M21 21v2" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+        </svg>
+      );
+    case "linen":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M5 9c4 0 4 4 8 4s4-4 8-4 4 4 6 4M5 16c4 0 4 4 8 4s4-4 8-4 4 4 6 4M5 23c4 0 4 4 8 4s4-4 8-4 4 4 6 4" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+        </svg>
+      );
+    case "kitchen":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="6" y="6" width="20" height="20" rx="1.5" stroke={stroke} strokeWidth={sw} fill="none" />
+          <path d="M6 13h20" stroke={stroke} strokeWidth={sw} />
+          <circle cx="10" cy="10" r="0.8" fill={stroke} />
+          <circle cx="14" cy="10" r="0.8" fill={stroke} />
+          <circle cx="18" cy="19.5" r="3" stroke={stroke} strokeWidth={sw} fill="none" />
+        </svg>
+      );
+    case "fridge":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="9" y="4" width="14" height="24" rx="1.5" stroke={stroke} strokeWidth={sw} fill="none" />
+          <path d="M9 14h14" stroke={stroke} strokeWidth={sw} />
+          <path d="M12 8v3M12 17v4" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+        </svg>
+      );
+    case "coffee":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M6 13h17v7a6 6 0 0 1-6 6h-5a6 6 0 0 1-6-6v-7Z" stroke={stroke} strokeWidth={sw} fill="none" />
+          <path d="M23 15h2a3 3 0 0 1 0 6h-2" stroke={stroke} strokeWidth={sw} fill="none" />
+          <path d="M11 9c0-2 2-2 2-4M16 9c0-2 2-2 2-4" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+        </svg>
+      );
+    case "cutlery":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M11 4v10a3 3 0 0 1-6 0V4M8 14v14" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+          <path d="M22 4c-3 0-5 3-5 7s2 5 5 5v12M22 4c3 0 5 3 5 7s-2 5-5 5" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+        </svg>
+      );
+    case "sea":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M3 12c3-2 5-2 8 0s5 2 8 0 5-2 8 0M3 18c3-2 5-2 8 0s5 2 8 0 5-2 8 0M3 24c3-2 5-2 8 0s5 2 8 0 5-2 8 0" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+        </svg>
+      );
+    case "balcony":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M5 12h22M5 12v14M27 12v14M11 12v14M16 12v14M21 12v14M3 26h26" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+          <path d="M9 12V6h14v6" stroke={stroke} strokeWidth={sw} fill="none" />
+        </svg>
+      );
+    case "sun":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="5" stroke={stroke} strokeWidth={sw} fill="none" />
+          <path d="M16 3v3M16 26v3M3 16h3M26 16h3M7 7l2 2M23 23l2 2M7 25l2-2M23 9l2-2" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+        </svg>
+      );
+    case "palm":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M16 28V13" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+          <path d="M16 13c-2-3-6-4-10-2 3-2 7-1 10 2Zm0 0c2-3 6-4 10-2-3-2-7-1-10 2Zm0 0c-3-2-5-6-3-10 1 3 1 7 3 10Zm0 0c3-2 5-6 3-10-1 3-1 7-3 10Z" stroke={stroke} strokeWidth={sw} fill="none" strokeLinejoin="round" />
+        </svg>
+      );
+    case "terrace":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M3 14l13-8 13 8M6 14v12h20V14" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M11 26v-5h4v5M19 21h3v3h-3z" stroke={stroke} strokeWidth={sw} fill="none" />
+        </svg>
+      );
+    case "table-out":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M4 14h24" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+          <path d="M7 14l-2 12M25 14l2 12" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+          <path d="M14 14v-3a2 2 0 0 1 4 0v3" stroke={stroke} strokeWidth={sw} fill="none" />
+        </svg>
+      );
+    case "open-air":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M6 20a5 5 0 0 1 1-9.9 7 7 0 0 1 13.5-1.4A5 5 0 0 1 25 20H6Z" stroke={stroke} strokeWidth={sw} fill="none" strokeLinejoin="round" />
+          <path d="M10 25h12M14 28h6" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+        </svg>
+      );
+    case "sunbathe":
+      return (
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="9" cy="9" r="2.5" stroke={stroke} strokeWidth={sw} fill="none" />
+          <path d="M4 22c3-3 7-4 11-4s8 1 13 4" stroke={stroke} strokeWidth={sw} fill="none" strokeLinecap="round" />
+          <path d="M4 22h24" stroke={stroke} strokeWidth={sw} strokeLinecap="round" />
+          <path d="M22 6l3-2 1 4-3 1z" stroke={stroke} strokeWidth={sw} fill="none" strokeLinejoin="round" />
+        </svg>
+      );
+  }
+}
 const REVIEWS = [
   {
     author: "Xsanz",
@@ -147,6 +359,9 @@ export default function Home() {
   });
   const [isStayModalOpen, setIsStayModalOpen] = useState(false);
   const [heroSlide, setHeroSlide] = useState(0);
+  const [aptSlide, setAptSlide] = useState(0);
+  const aptTrackRef = useRef<HTMLDivElement>(null);
+  const [aptTranslate, setAptTranslate] = useState(0);
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -154,6 +369,21 @@ export default function Home() {
     }, HERO_INTERVAL_MS);
     return () => window.clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    const update = () => {
+      const track = aptTrackRef.current;
+      if (!track) return;
+      const slide = track.querySelector<HTMLElement>(".apt-slide");
+      if (!slide) return;
+      const style = window.getComputedStyle(track);
+      const gap = parseFloat(style.columnGap || style.gap || "0") || 0;
+      setAptTranslate(aptSlide * (slide.getBoundingClientRect().width + gap));
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [aptSlide]);
   const reviewPages = buildReviewPages();
   const [reviewPageIndex, setReviewPageIndex] = useState(reviewPages.length);
   const [reviewTransition, setReviewTransition] = useState(true);
@@ -372,50 +602,92 @@ export default function Home() {
         <div className="section-header reveal">
           <p className="section-eyebrow">Nuestro alojamiento</p>
           <h2 className="section-title">Tu apartamento en Roquetas de Mar</h2>
+          <p className="section-sub">
+            {APARTMENT_SLIDES[aptSlide]?.title} · {aptSlide + 1} / {APARTMENT_SLIDES.length}
+          </p>
         </div>
-        <div className="cards cards-single">
-          <article className="card reveal d1">
-            <div className="card-img">
-              <img src={APARTMENT.image} alt={APARTMENT.name} />
+
+        <div className="apt-carousel reveal">
+          <button
+            type="button"
+            className="apt-nav apt-nav-prev"
+            aria-label="Imagen anterior"
+            onClick={() =>
+              setAptSlide((current) => (current - 1 + APARTMENT_SLIDES.length) % APARTMENT_SLIDES.length)
+            }
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+
+          <div className="apt-viewport">
+            <div
+              className="apt-track"
+              ref={aptTrackRef}
+              style={{ transform: `translateX(-${aptTranslate}px)` }}
+            >
+              {APARTMENT_SLIDES.map((slide, index) => (
+                <div
+                  key={slide.image}
+                  className={`apt-slide ${index === aptSlide ? "is-active" : ""}`}
+                  aria-hidden={index === aptSlide ? "false" : "true"}
+                >
+                  <Image
+                    src={slide.image}
+                    alt={slide.alt}
+                    fill
+                    sizes="(max-width: 768px) 90vw, (max-width: 1280px) 80vw, 1100px"
+                    quality={82}
+                  />
+                </div>
+              ))}
             </div>
-            <div className="card-body">
-              <div className="card-title">{APARTMENT.name}</div>
-              <p className="card-meta">
-                <strong>{APARTMENT.size}</strong> · {APARTMENT.bed}
-              </p>
-              <p className="card-description">{APARTMENT.summary}</p>
-              <ul className="card-features card-features-main">
-                {APARTMENT.highlights.map((feature) => (
-                  <li key={feature}>{feature}</li>
-                ))}
-              </ul>
-              <div className="card-subsection">
-                <p>Cocina</p>
-                <ul className="card-features">
-                  {APARTMENT.kitchen.map((item) => (
-                    <li key={`kitchen-${item}`}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="card-subsection">
-                <p>Baño</p>
-                <ul className="card-features">
-                  {APARTMENT.bathroom.map((item) => (
-                    <li key={`bath-${item}`}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <ul className="card-features card-features-main">
-                <li>TV de pantalla plana</li>
-                <li>Entrada privada</li>
-                <li>Zona de comedor</li>
-                <li>Apartamento privado en edificio</li>
-              </ul>
-              <a href={quickAvailabilityUrl} className="btn-card">
-                Comprobar disponibilidad
-              </a>
+          </div>
+
+          <button
+            type="button"
+            className="apt-nav apt-nav-next"
+            aria-label="Imagen siguiente"
+            onClick={() => setAptSlide((current) => (current + 1) % APARTMENT_SLIDES.length)}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="apt-dots" role="tablist" aria-label="Selector de slide">
+          {APARTMENT_SLIDES.map((slide, index) => (
+            <button
+              key={slide.image}
+              type="button"
+              role="tab"
+              aria-selected={index === aptSlide}
+              aria-label={`Ver ${slide.title}`}
+              className={`apt-dot ${index === aptSlide ? "is-active" : ""}`}
+              onClick={() => setAptSlide(index)}
+            >
+              <span>{slide.title}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="apt-features" role="list" aria-label={`Características de ${APARTMENT_SLIDES[aptSlide]?.title}`}>
+          {APARTMENT_SLIDES[aptSlide]?.features.map((feature) => (
+            <div className="apt-feature" role="listitem" key={`${aptSlide}-${feature.label}`}>
+              <span className="apt-feature-icon" aria-hidden="true">
+                <AptFeatureIcon name={feature.icon} />
+              </span>
+              <span className="apt-feature-label">{feature.label}</span>
             </div>
-          </article>
+          ))}
+        </div>
+
+        <div className="apt-cta">
+          <a href={quickAvailabilityUrl} className="btn-card">
+            Comprobar disponibilidad
+          </a>
         </div>
       </section>
 

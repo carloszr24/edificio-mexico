@@ -1705,177 +1705,6 @@ nav {
   object-fit: cover;
 }
 
-.resenas {
-  padding: 80px 24px;
-  background: #f9f9f9;
-}
-
-.resenas-inner {
-  max-width: 1140px;
-  margin: 0 auto;
-}
-
-.resenas-header {
-  text-align: center;
-  margin-bottom: 28px;
-}
-
-.resenas-grid {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 18px;
-  align-items: stretch;
-}
-
-.review-card {
-  background: #fff;
-  border: 1px solid #e4e4e4;
-  border-radius: 6px;
-}
-
-.resenas-side {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
-
-.booking-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.booking-block > * {
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1;
-}
-
-.rating-general-image {
-  width: 100%;
-  max-width: 190px;
-  height: auto;
-  display: block;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-}
-
-.booking-logo-large {
-  width: 100%;
-  max-width: 190px;
-  height: auto;
-  object-fit: contain;
-  display: block;
-}
-
-.booking-comments-count {
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.2;
-  color: #173f81;
-  margin: 0;
-  text-align: center;
-}
-
-.google-logo-slot {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.google-logo-large {
-  width: 100%;
-  max-width: 190px;
-  height: auto;
-  object-fit: contain;
-  display: block;
-}
-
-.review-card {
-  padding: 16px;
-  position: relative;
-  min-height: 218px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.reviews-carousel {
-  width: 100%;
-  overflow: hidden;
-}
-
-.reviews-track {
-  display: flex;
-  transition: transform 0.45s ease;
-}
-
-.reviews-track.no-transition {
-  transition: none;
-}
-
-.review-page {
-  width: 100%;
-  flex-shrink: 0;
-}
-
-.reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  height: 100%;
-}
-
-.review-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-  padding-right: 48px;
-}
-
-.review-badge {
-  display: inline-block;
-  border: 1px solid #dedede;
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #333;
-}
-
-.review-text {
-  font-size: 13px;
-  line-height: 1.7;
-  color: #444;
-  margin-bottom: 16px;
-  padding-right: 48px;
-}
-
-.review-author {
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.review-submeta {
-  margin-top: 6px;
-  font-size: 12px;
-  color: #777;
-}
-
-.review-score-image {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-}
-
 .cta-final {
   background: #1a1a1a;
   padding: 30px 24px;
@@ -1992,14 +1821,6 @@ nav {
     display: none;
   }
 
-  .resenas-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .resenas-side {
-    align-items: center;
-  }
-
   .cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2010,10 +1831,6 @@ nav {
 
   .servicios-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .review-meta {
-    align-items: center;
   }
 }
 
@@ -2059,16 +1876,8 @@ nav {
     display: none;
   }
 
-  .review-score-image {
-    width: 32px;
-    height: 32px;
-    top: 12px;
-    right: 12px;
-  }
-
   .hero-left,
-  .alojamientos,
-  .resenas {
+  .alojamientos {
     padding-left: 16px;
     padding-right: 16px;
   }
@@ -2097,18 +1906,6 @@ nav {
 
   .servicios-grid {
     grid-template-columns: 1fr;
-  }
-
-  .resenas-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .review-page .reviews-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .booking-logo-slot {
-    min-height: 82px;
   }
 
   .cta-final,

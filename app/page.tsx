@@ -241,95 +241,6 @@ function AptFeatureIcon({ name }: { name: AptIcon }) {
       );
   }
 }
-const REVIEWS = [
-  {
-    author: "Xsanz",
-    country: "España",
-    date: "19 abril 2026",
-    type: "En familia",
-    score: 10,
-    title: "Excepcional",
-    text: "La ubicación es perfecta para visitar Teruel, a 10 minutos andando del centro. Fuimos 2 adultos y 2 niñas y estuvimos muy cómodos.",
-  },
-  {
-    author: "Ruben",
-    country: "España",
-    date: "5 abril 2026",
-    type: "En familia",
-    score: 10,
-    title: "Excepcional",
-    text: "Hemos pasado unos días en familia estupendos, la ubicación y las instalaciones son excelentes. Para repetir sin duda.",
-  },
-  {
-    author: "Lisa",
-    country: "España",
-    date: "3 abril 2026",
-    type: "En pareja",
-    score: 10,
-    title: "Excelente",
-    text: "Todo muy cómodo y limpio, además de cerca del centro turístico.",
-  },
-  {
-    author: "Claudia",
-    country: "España",
-    date: "23 marzo 2026",
-    type: "En familia",
-    score: 10,
-    title: "Genial",
-    text: "Bien situado, anfitrión atento, check-in fácil y camas cómodas. Estuvimos como en casa.",
-  },
-  {
-    author: "Celia",
-    country: "España",
-    date: "3 marzo 2026",
-    type: "En familia",
-    score: 10,
-    title: "Excelente",
-    text: "Todo limpio e impecable, ubicación de 10 y calidad-precio excelente. Si volvemos a Teruel repetiremos.",
-  },
-  {
-    author: "Tomasz",
-    country: "Polonia",
-    date: "26 febrero 2026",
-    type: "Viajero solo",
-    score: 10,
-    title: "Muy recomendable",
-    text: "Ubicación excelente para Casco Antiguo y Universidad. Zona tranquila y anfitrión muy atento.",
-  },
-  {
-    author: "Lidia",
-    country: "España",
-    date: "9 noviembre 2025",
-    type: "En pareja",
-    score: 10,
-    title: "Todo genial",
-    text: "Ubicación excelente y alojamiento tal como en las fotos, con todo muy limpio.",
-  },
-  {
-    author: "David",
-    country: "España",
-    date: "11 septiembre 2025",
-    type: "En grupo",
-    score: 10,
-    title: "Excepcional",
-    text: "Muy buena ubicación, alojamiento limpio y muchas facilidades para guardar las bicicletas.",
-  },
-];
-
-const REVIEWS_PER_PAGE = 4;
-
-function buildReviewPages() {
-  const pages: (typeof REVIEWS)[] = [];
-  for (let i = 0; i < REVIEWS.length; i += REVIEWS_PER_PAGE) {
-    const page = REVIEWS.slice(i, i + REVIEWS_PER_PAGE);
-    if (page.length < REVIEWS_PER_PAGE) {
-      page.push(...REVIEWS.slice(0, REVIEWS_PER_PAGE - page.length));
-    }
-    pages.push(page);
-  }
-  return pages;
-}
-
 export default function Home() {
   const [stay, setStay] = useState<StaySelection>({
     adults: 2,
@@ -391,10 +302,6 @@ export default function Home() {
         ? 0
         : aptIndex - 1;
   const aptActiveSlide = APARTMENT_SLIDES[aptRealIndex];
-  const reviewPages = buildReviewPages();
-  const [reviewPageIndex, setReviewPageIndex] = useState(reviewPages.length);
-  const [reviewTransition, setReviewTransition] = useState(true);
-  const carouselReviewPages = [...reviewPages, ...reviewPages, ...reviewPages];
 
   const stayTriggerLabel = (() => {
     if (!stay.from || !stay.to) return "Selecciona tu estancia";
@@ -430,34 +337,6 @@ export default function Home() {
 
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setReviewTransition(true);
-      setReviewPageIndex((current) => current + 1);
-    }, 3200);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleReviewTrackTransitionEnd = () => {
-    if (reviewPageIndex >= reviewPages.length * 2) {
-      setReviewTransition(false);
-      setReviewPageIndex(reviewPages.length);
-      return;
-    }
-    if (reviewPageIndex < reviewPages.length) {
-      setReviewTransition(false);
-      setReviewPageIndex(reviewPages.length * 2 - 1);
-    }
-  };
-
-  useEffect(() => {
-    if (reviewTransition) return;
-    const id = requestAnimationFrame(() => {
-      setReviewTransition(true);
-    });
-    return () => cancelAnimationFrame(id);
-  }, [reviewTransition]);
 
   return (
     <>
@@ -666,77 +545,6 @@ export default function Home() {
         />
       </section>
 
-      <section className="resenas" id="resenas">
-        <div className="resenas-inner">
-          <div className="resenas-grid reveal">
-            <div className="resenas-side">
-              <div className="booking-block">
-                <Image
-                  src="/images/rating-general.png"
-                  alt="Valoración general"
-                  width={520}
-                  height={360}
-                  className="rating-general-image"
-                />
-                <Image
-                  src="/images/logo-booking.png"
-                  alt="Logo Booking"
-                  width={360}
-                  height={96}
-                  className="booking-logo-large"
-                />
-                <p className="booking-comments-count">512 comentarios</p>
-              </div>
-              <div className="google-logo-slot">
-                <Image
-                  src="/images/logo-google.png"
-                  alt="Google"
-                  width={280}
-                  height={280}
-                  className="google-logo-large"
-                />
-              </div>
-            </div>
-            <div className="reviews-carousel">
-              <div
-                className={`reviews-track ${reviewTransition ? "" : "no-transition"}`}
-                style={{ transform: `translateX(-${reviewPageIndex * 100}%)` }}
-                onTransitionEnd={handleReviewTrackTransitionEnd}
-              >
-                {carouselReviewPages.map((page, pageIndex) => (
-                  <div className="review-page" key={`page-${pageIndex}`}>
-                    <div className="reviews-grid">
-                      {page.map((review, index) => (
-                        <article className="review-card" key={`${review.author}-${review.date}-${index}`}>
-                          <div className="review-meta">
-                            <span className="review-badge">{review.title}</span>
-                          </div>
-                          <p className="review-text">{review.text}</p>
-                          <div className="review-author">
-                            {review.author}, {review.country}
-                          </div>
-                          <div className="review-submeta">
-                            {review.type} - {review.date}
-                          </div>
-                          <img
-                            src="/images/rating-number.png"
-                            alt="Valoración 10"
-                            className="review-score-image"
-                            onError={(event) => {
-                              event.currentTarget.style.display = "none";
-                            }}
-                          />
-                        </article>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section className="ubicacion-section" id="ubicacion">
         <div className="ubicacion-map">
           <iframe
@@ -794,9 +602,6 @@ export default function Home() {
           </li>
           <li>
             <a href="#ubicacion">Ubicación</a>
-          </li>
-          <li>
-            <a href="#resenas">Opiniones</a>
           </li>
         </ul>
         <ul className="footer-contact">
